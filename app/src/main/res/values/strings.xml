@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Pixel Meet</string>
+    <string name="welcome_to_pixel_meet">Welcome to Pixel Meet Stranger</string>
+    <string name="app_description1">Pixel meet is intended for any person from the age of 18 years. It is a meeting platform with certain extras. After creating an account we recommend to read the short tutorial. It will help you in short steps how Pixel Meet, Pixel token and the earning system works.</string>
+    <string name="app_description2">Be fair, be respectful and don\'t be a spoiler. enjoy the community and spread joy to all. In the rules section you will find rules and measures.</string>
+    <string name="have_fun">Have Fun</string>
+    <string name="enter">Enter</string>
+    <string name="login_desc">A NEW WAY TO MEET STRANGERS. FIND SOME LOVE, Friends OR JUST FUN</string>
+    <string name="google">Google</string>
+    <string name="facebook">Facebook</string>
+    <string name="email">Email</string>
+    <string name="register">Register</string>
+    <string name="name">Name</string>
+    <string name="city">City</string>
+    <string name="town">Town</string>
+    <string name="country">Country</string>
+    <string name="date">Date</string>
+    <string name="age">Age</string>
+    <string name="gender">Gender</string>
+    <string name="DOB">Date of Birth</string>
+    <string name="login">Login</string>
+    <string name="location">Location</string>
+</resources>

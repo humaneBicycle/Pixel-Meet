@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "159870854240",
+    "project_id": "pixel-meet-67f55",
+    "storage_bucket": "pixel-meet-67f55.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:159870854240:android:75b4beb0247e7763984f05",
+        "android_client_info": {
+          "package_name": "com.brobia.pixelmeet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "159870854240-7rfsinj3tv5j831r6av83j41oqv0722d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVhIG_hOTOOpaELn-VpawU2WE4D-DU_LM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "159870854240-7rfsinj3tv5j831r6av83j41oqv0722d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
