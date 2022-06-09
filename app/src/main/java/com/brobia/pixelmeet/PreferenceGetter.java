@@ -11,6 +11,7 @@ public class PreferenceGetter {
     SharedPreferences.Editor editor;
 
     public static final String IS_SIGNED_IN= "is_signed_in";
+    public static final String HAS_LOCATION_ACCESS="has_location_access";
 
     public PreferenceGetter(Context c){
         this.context = c;
