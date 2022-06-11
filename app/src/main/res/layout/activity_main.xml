@@ -87,7 +87,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="12dp"
         android:id="@+id/enter_on_screen_one"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

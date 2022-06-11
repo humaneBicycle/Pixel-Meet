@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -71,22 +72,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            fusedLocationClient.getLastLocation()
-                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                        @Override
-                        public void onSuccess(Location location) {
-                            // Got last known location. In some rare situations this can be null.
-                            if (location != null) {
-                                // Logic to handle location object
-                                latitude = location.getLatitude();
-                                longitude = location.getLongitude();
-                                locationEditText.setText(getAddress(latitude,longitude));
 
-                            }
-                        }
-                    });
-        }
 
 
         findViewById(R.id.register_activity_login).setOnClickListener(new View.OnClickListener() {
@@ -108,6 +94,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 nextButtonConfiguration(getVisibleLinearLayout());
+                Log.d("linearlayout", getVisibleLinearLayout().getTag().toString());
             }
         });
 
@@ -140,7 +127,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(ContextCompat.checkSelfPermission(
                         RegisterActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED){
-
+                    getAndUpdateUserLocation();
                 }else{
                     requestPermissions(new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, LOCATION_ACCESS_CODE);
 
@@ -170,33 +157,76 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-    private void nextButtonConfiguration(LinearLayout layout){
-        if(layout.getTag()=="screen_two"){
-            next.setImageDrawable(getResources().getDrawable(R.drawable.tick_button));
+    private void setActiveDot(int i){
+        switch (i){
+            case 0:
+                mDots[0].setTextColor(getResources().getColor(R.color.green));
+                mDots[1].setTextColor(getResources().getColor(R.color.white));
+                mDots[2].setTextColor(getResources().getColor(R.color.white));
+                break;
+            case 1:
+                mDots[0].setTextColor(getResources().getColor(R.color.white));
+                mDots[1].setTextColor(getResources().getColor(R.color.green));
+                mDots[2].setTextColor(getResources().getColor(R.color.white));
+                break;
+            case 2:
+                mDots[0].setTextColor(getResources().getColor(R.color.white));
+                mDots[1].setTextColor(getResources().getColor(R.color.white));
+                mDots[2].setTextColor(getResources().getColor(R.color.green));
+                break;
         }
-        if(layout.getTag()=="screen_one"){
-
-            screenOne.animate().translationX(-500.0f).alpha(0).setDuration(200);
-            screenTwo.animate().translationX(500.0f).alpha(1).setDuration(200);
-            screenOne.setVisibility(View.GONE);
-            screenTwo.setVisibility(View.VISIBLE);
-        }
-
 
 
     }
 
+    private void nextButtonConfiguration(LinearLayout layout){
+        if(layout.getTag().toString().equals("screen_two")){
+            next.setImageDrawable(getResources().getDrawable(R.drawable.tick_button));
+            screenTwo.setAnimation(AnimationUtils.loadAnimation(this, R.anim.fade_out_to_left));
+            screenThree.setAnimation(AnimationUtils.loadAnimation(this, R.anim.fade_in_from_right));
+            screenTwo.setVisibility(View.GONE);
+            screenThree.setVisibility(View.VISIBLE);
+            setActiveDot(2);
+
+        }
+        if(layout.getTag().toString().equals("screen_one")){
+
+
+            screenTwo.setAnimation(AnimationUtils.loadAnimation(this, R.anim.fade_in_from_right));
+            screenOne.setAnimation(AnimationUtils.loadAnimation(this, R.anim.fade_out_to_left));
+            screenOne.setVisibility(View.GONE);
+            screenTwo.setVisibility(View.VISIBLE);
+            prev.setVisibility(View.VISIBLE);
+            setActiveDot(1);
+        }
+
+        if(layout.getTag().toString().equals("screen_three")){
+            //TODO create a new user. think of model
+        }
+
+    }
+
     private void prevButtonConfiguration(LinearLayout layout) {
-        if (layout.getTag() == "screen_two") {
+        if (layout.getTag().toString().equals("screen_two")) {
             prev.setVisibility(View.GONE);
+            screenTwo.setAnimation(AnimationUtils.loadAnimation(this, R.anim.fade_out_to_right));
+            screenOne.setAnimation(AnimationUtils.loadAnimation(this, R.anim.fade_in_from_left));
+            screenTwo.setVisibility(View.GONE);
+            screenOne.setVisibility(View.VISIBLE);
+            setActiveDot(0);
 
         }
 
-        if (layout.getTag() == "screen_three") {
+        if (layout.getTag().toString().equals("screen_three")) {
             next.setImageDrawable(getResources().getDrawable(R.drawable.front_arrow));
+            screenTwo.setAnimation(AnimationUtils.loadAnimation(this, R.anim.fade_in_from_left));
+            screenThree.setAnimation(AnimationUtils.loadAnimation(this, R.anim.fade_out_to_right));
+            screenTwo.setVisibility(View.VISIBLE);
+            screenThree.setVisibility(View.GONE);
+            setActiveDot(1);
         }
 
-        prev.setBackground(getResources().getDrawable(R.drawable.green_background));
+        //prev.setBackground(getResources().getDrawable(R.drawable.green_background));
     }
 
 
@@ -214,6 +244,28 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    private void getAndUpdateUserLocation(){
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            fusedLocationClient.getLastLocation()
+                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            // Got last known location. In some rare situations this can be null.
+                            if (location != null) {
+                                // Logic to handle location object
+                                latitude = location.getLatitude();
+                                longitude = location.getLongitude();
+                                locationEditText.setText(getAddress(latitude,longitude));
+
+                            }
+                        }
+                    });
+        }else{
+            new PreferenceGetter(this).putBoolean(PreferenceGetter.HAS_LOCATION_ACCESS,false);
+            //TODO show user app cant work without location nperm
+        }
     }
 
 

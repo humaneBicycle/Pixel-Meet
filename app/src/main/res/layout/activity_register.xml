@@ -37,6 +37,7 @@
             android:layout_marginTop="84dp"
             android:layout_weight="3"
             android:text="@string/register"
+            android:fontFamily="@font/robotomonoregular"
             android:textColor="@color/white"
             android:textSize="28sp" />
 
@@ -75,7 +76,9 @@
             app:spinner_item_array="@array/gender"
             app:spinner_popup_animation="normal"
             app:spinner_popup_background="@color/black"
-            app:spinner_popup_elevation="14dp" />
+            app:spinner_popup_elevation="14dp"
+            android:fontFamily="@font/robotomonoregular"
+            app:fontFamily="@font/robotomonoregular"/>
 
 
         <EditText
@@ -83,14 +86,18 @@
             android:layout_height="wrap_content"
             android:hint="@string/name"
             android:padding="24dp"
-            android:textColorHint="@color/white" />
+            android:fontFamily="@font/robotomonoregular"
+            android:textColorHint="@color/white"
+            android:textColor="@color/white"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/DOB"
             android:padding="24dp"
+            android:fontFamily="@font/robotomonoregular"
             android:id="@+id/age_selector_register"
-            android:textColorHint="@color/white" />
+            android:textColorHint="@color/white"
+            android:textColor="@color/white" />
 
         <EditText
             android:layout_width="match_parent"
@@ -99,6 +106,7 @@
             android:id="@+id/age_year_selector_register"
             android:inputType="none"
             android:padding="24dp"
+            android:fontFamily="@font/robotomonoregular"
             android:textColorHint="@color/white" />
 
         <LinearLayout
@@ -112,10 +120,12 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:layout_weight="9"
-                android:clickable="false"
+                android:focusable="false"
+                android:fontFamily="@font/robotomonoregular"
                 android:hint="@string/location"
                 android:padding="24dp"
-                android:textColorHint="@color/white" />
+                android:textColorHint="@color/white"
+                android:textColor="@color/white" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -139,25 +149,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
-        <com.skydoves.powerspinner.PowerSpinnerView
-            android:id="@+id/figure_registration"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:foreground="?attr/selectableItemBackground"
-            android:hint="@string/gender"
-            android:padding="16dp"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
-            android:textSize="19.5sp"
-            app:spinner_arrow_gravity="end"
-            app:spinner_arrow_padding="24dp"
-            app:spinner_divider_color="@color/white"
-            app:spinner_divider_show="true"
-            app:spinner_divider_size="0.4dp"
-            app:spinner_item_array="@array/gender"
-            app:spinner_popup_animation="normal"
-            app:spinner_popup_background="@color/black"
-            app:spinner_popup_elevation="14dp" />
 
 
         <com.skydoves.powerspinner.PowerSpinnerView
@@ -175,16 +166,18 @@
             app:spinner_divider_color="@color/white"
             app:spinner_divider_show="true"
             app:spinner_divider_size="0.4dp"
-            app:spinner_item_array="@array/gender"
+            app:spinner_item_array="@array/eye_color"
             app:spinner_popup_animation="normal"
             app:spinner_popup_background="@color/black"
-            app:spinner_popup_elevation="14dp" />
+            app:spinner_popup_elevation="14dp"
+            android:fontFamily="@font/robotomonoregular"
+            app:fontFamily="@font/robotomonoregular"/>
         <com.skydoves.powerspinner.PowerSpinnerView
             android:id="@+id/hair_style_registration"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:foreground="?attr/selectableItemBackground"
-            android:hint="@string/eye_color"
+            android:hint="@string/hair_style"
             android:padding="16dp"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
@@ -194,17 +187,29 @@
             app:spinner_divider_color="@color/white"
             app:spinner_divider_show="true"
             app:spinner_divider_size="0.4dp"
-            app:spinner_item_array="@array/gender"
+            app:spinner_item_array="@array/hairstyle"
             app:spinner_popup_animation="normal"
-            android:text="@string/hair_style"
             app:spinner_popup_background="@color/black"
-            app:spinner_popup_elevation="14dp" />
+            app:spinner_popup_elevation="14dp"
+            android:fontFamily="@font/robotomonoregular"
+            app:fontFamily="@font/robotomonoregular" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hobby"
+            android:id="@+id/height_register"
+            android:inputType="number"
+            android:padding="24dp"
+            android:textColorHint="@color/white"
+            android:fontFamily="@font/robotomonoregular"
+            android:textColor="@color/white" />
+
         <com.skydoves.powerspinner.PowerSpinnerView
-            android:id="@+id/height_registration"
+            android:id="@+id/smoking_pref_registration"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:foreground="?attr/selectableItemBackground"
-            android:hint="@string/eye_color"
+            android:hint="@string/smoking"
             android:padding="16dp"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
@@ -214,11 +219,28 @@
             app:spinner_divider_color="@color/white"
             app:spinner_divider_show="true"
             app:spinner_divider_size="0.4dp"
-            app:spinner_item_array="@array/gender"
+            app:spinner_item_array="@array/smoking"
             app:spinner_popup_animation="normal"
-            android:text="@string/height"
             app:spinner_popup_background="@color/black"
-            app:spinner_popup_elevation="14dp" />
+            app:spinner_popup_elevation="14dp"
+            android:fontFamily="@font/robotomonoregular"
+            app:fontFamily="@font/robotomonoregular" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/screen_three"
+        android:tag="screen_three"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="48dp"
+        android:background="@drawable/rechteck01"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
         <com.skydoves.powerspinner.PowerSpinnerView
             android:id="@+id/religion_registration"
             android:layout_width="match_parent"
@@ -234,45 +256,13 @@
             app:spinner_divider_color="@color/white"
             app:spinner_divider_show="true"
             app:spinner_divider_size="0.4dp"
-            app:spinner_item_array="@array/gender"
+            app:spinner_item_array="@array/religion"
             app:spinner_popup_animation="normal"
             android:text="@string/religion"
             app:spinner_popup_background="@color/black"
-            app:spinner_popup_elevation="14dp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <EditText
-                android:layout_width="0dp"
-                android:layout_height="72dp"
-                android:layout_weight="9"
-                android:hint="@string/location"
-                android:padding="24dp"
-                android:textColorHint="@color/white"
-                android:layout_margin="2dp"/>
-            <ImageView
-                android:layout_width="72dp"
-                android:layout_height="72dp"
-                android:layout_weight="1"
-                android:padding="2dp"
-                android:src="@drawable/ic_baseline_location_on_24"/>
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/screen_three"
-        android:tag="screen_three"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="48dp"
-        android:background="@drawable/rechteck01"
-        android:orientation="vertical"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+            app:spinner_popup_elevation="14dp"
+            android:fontFamily="@font/robotomonoregular"
+            app:fontFamily="@font/robotomonoregular" />
 
         <EditText
             android:layout_width="match_parent"
@@ -281,27 +271,21 @@
             android:id="@+id/hobby_register"
             android:inputType="none"
             android:padding="24dp"
-            android:textColorHint="@color/white" />
-
-        <com.skydoves.powerspinner.PowerSpinnerView
-            android:id="@+id/smoking_pref_registration"
+            android:textColorHint="@color/white"
+            android:fontFamily="@font/robotomonoregular"
+            android:textColor="@color/white" />
+        <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:foreground="?attr/selectableItemBackground"
-            android:hint="@string/hobby"
-            android:padding="16dp"
-            android:textColor="@color/white"
+            android:hint="@string/bio"
+            android:id="@+id/bio_register"
+            android:inputType="none"
+            android:padding="24dp"
             android:textColorHint="@color/white"
-            android:textSize="19.5sp"
-            app:spinner_arrow_gravity="end"
-            app:spinner_arrow_padding="24dp"
-            app:spinner_divider_color="@color/white"
-            app:spinner_divider_show="true"
-            app:spinner_divider_size="0.4dp"
-            app:spinner_item_array="@array/gender"
-            app:spinner_popup_animation="normal"
-            app:spinner_popup_background="@color/black"
-            app:spinner_popup_elevation="14dp" />
+            android:fontFamily="@font/robotomonoregular"
+            android:textColor="@color/white"/>
+
+
 
 
 

@@ -7,4 +7,40 @@
         <item>Non Binary</item>
         <item>Other</item>
     </string-array>
+    <string-array name="figure">
+        <item>Athletic</item>
+        <item>Curvy</item>
+        <item>Beer Belly</item>
+        <item>Fat</item>
+        <item>Tall</item>
+    </string-array>
+    <string-array name="eye_color">
+        <item>Blue</item>
+        <item>Brown</item>
+        <item>Green</item>
+        <item>Dark-brown</item>
+        <item>Mixed</item>
+    </string-array>
+    <string-array name="hairstyle">
+        <item>Blonde Short</item>
+        <item>Black Long</item>
+        <item>Brown Middle</item>
+        <item>Dark-brown</item>
+        <item>Mixed</item>
+    </string-array>
+    <string-array name="religion">
+        <item>None</item>
+        <item>Atheist</item>
+        <item>Christian</item>
+        <item>Muslim</item>
+        <item>Hindu</item>
+        <item>Jain</item>
+        <item>Sikh</item>
+    </string-array>
+    <string-array name="smoking">
+        <item>Yes</item>
+        <item>No</item>
+        <item>Party Smoker</item>
+        <item>I hate it</item>
+    </string-array>
 </resources>
