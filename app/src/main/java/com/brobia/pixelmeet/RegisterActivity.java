@@ -1,22 +1,16 @@
 package com.brobia.pixelmeet;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.icu.util.Calendar;
-import android.icu.util.GregorianCalendar;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -25,54 +19,102 @@ import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aminography.primecalendar.PrimeCalendar;
 import com.aminography.primecalendar.civil.CivilCalendar;
-import com.aminography.primecalendar.japanese.JapaneseCalendar;
 import com.aminography.primedatepicker.picker.PrimeDatePicker;
 import com.aminography.primedatepicker.picker.callback.SingleDayPickCallback;
+import com.brobia.pixelmeet.model.User;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.skydoves.powerspinner.PowerSpinnerView;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
 
 public class RegisterActivity extends AppCompatActivity {
 
     public TextView[] mDots;
     LinearLayout mDotsLayout;
     ImageView prev, next, location;
-    int[] registration_page_state = {1, 0, 0};//1 means active page, 0 means non active page
     LinearLayout screenOne, screenTwo, screenThree;
-    EditText dobSelector, inputAge, locationEditText;
+    EditText  inputAge, locationEditText, name, emailEditText, hobbyRegisterET, bioRegisterET, prologueET,professionET;
     public static final int LOCATION_ACCESS_CODE = 1;
     protected Double latitude, longitude;
     private FusedLocationProviderClient fusedLocationClient;
+    TextView dobSelector;
+    ArrayList<EditText> editTexts;
+    ArrayList<PowerSpinnerView> powerSpinners;
+    PowerSpinnerView genderSpinner, eyeColorSpinner, hairStyleSpinner, smokingSpinner, religionSpinner;
+    ProgressBar progressBar;
+    String dob;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        Log.d("pwd", "onCreate: register activity created");
 
+        //three dots on the bottom
         mDotsLayout = findViewById(R.id.dots_layout);
+
+        //imageView buttons
         next = findViewById(R.id.img_register_next);
         prev = findViewById(R.id.img_register_prev);
+        location = findViewById(R.id.location_button_register);
+
+        //screens aka linear layout
         screenOne = findViewById(R.id.screen_one);
         screenTwo = findViewById(R.id.screen_two);
         screenThree = findViewById(R.id.screen_three);
+
+        //textview
         dobSelector = findViewById(R.id.age_selector_register);
-        inputAge = findViewById(R.id.age_year_selector_register);
-        location = findViewById(R.id.location_button_register);
+
+        //power spinners
+        genderSpinner = findViewById(R.id.gender_spinner);
+        eyeColorSpinner = findViewById(R.id.eye_color_registration);
+        hairStyleSpinner = findViewById(R.id.hair_style_registration);
+        smokingSpinner = findViewById(R.id.smoking_pref_registration);
+        religionSpinner = findViewById(R.id.religion_registration);
+
+        //edittext
+        emailEditText = findViewById(R.id.email_register);
+        name = findViewById(R.id.name_register);
         locationEditText=findViewById(R.id.location_edittext_register);
+        inputAge = findViewById(R.id.age_year_selector_register);
+        hobbyRegisterET = findViewById(R.id.hobby_register);
+        bioRegisterET = findViewById(R.id.bio_register);
+        prologueET = findViewById(R.id.prologue_register);
+        professionET = findViewById(R.id.profession_register);
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        //progress bar
+        progressBar = findViewById(R.id.progress_bar_loading_register_activity);
 
 
+
+
+        String email = getIntent().getStringExtra("email");
+        if(email!=null && !email.equals("")){
+            emailEditText.setText(email);
+            emailEditText.setFocusable(false);
+            findViewById(R.id.register_activity_login).setVisibility(View.GONE);
+        } else if (FirebaseAuth.getInstance().getCurrentUser() != null){
+            Log.d("pmd",FirebaseAuth.getInstance().getCurrentUser().getEmail());
+            emailEditText.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+            emailEditText.setFocusable(false);
+            findViewById(R.id.register_activity_login).setVisibility(View.GONE);
+        }
 
 
         findViewById(R.id.register_activity_login).setOnClickListener(new View.OnClickListener() {
@@ -93,21 +135,22 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+
                 nextButtonConfiguration(getVisibleLinearLayout());
-                Log.d("linearlayout", getVisibleLinearLayout().getTag().toString());
             }
         });
 
         SingleDayPickCallback callback = new SingleDayPickCallback() {
             @Override
             public void onSingleDayPicked(PrimeCalendar singleDay) {
-                // TODO
-                dobSelector.setText(singleDay.getLongDateString());
+                dob = singleDay.getLongDateString();
+                dobSelector.setText(dob);
                 inputAge.setText(String.valueOf(Calendar.getInstance().get(Calendar.YEAR) -  singleDay.getYear()));
                 inputAge.setClickable(false);
 
             }
         };
+
 
         dobSelector.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,6 +170,8 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(ContextCompat.checkSelfPermission(
                         RegisterActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED){
+                    fusedLocationClient = LocationServices.getFusedLocationProviderClient(RegisterActivity.this);
+
                     getAndUpdateUserLocation();
                 }else{
                     requestPermissions(new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, LOCATION_ACCESS_CODE);
@@ -201,8 +246,109 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
         if(layout.getTag().toString().equals("screen_three")){
-            //TODO create a new user. think of model
+            Log.d("three_screen_finish_pressed","o");
+            //boolean b =isFormComplete();
+            Log.d("pwd", "tick button called");
+            registerUser();
+
+
+
+
         }
+
+
+    }
+
+    int isFormComplete =0;//0 for true 1 for false
+    private void registerUser() {
+        Log.d("pwd", "registereUser called");
+        com.brobia.pixelmeet.Callback callback = new Callback() {
+            @Override
+            public void onComplete() {
+                Log.d("pwd", "onComplete: register user");
+                if(isFormComplete==0){
+                    String s = "Dummy address";
+                    Log.d("pwd", "time to start firebase registration");
+                    User user = new User(name.getText().toString(),dob,eyeColorSpinner.getText().toString(),genderSpinner.getText().toString(),hairStyleSpinner.getText().toString(),religionSpinner.getText().toString(),hobbyRegisterET.getText().toString(),smokingSpinner.getText().toString(),prologueET.getText().toString(),bioRegisterET.getText().toString(),professionET.getText().toString(),s,Integer.parseInt(inputAge.getText().toString()),0,null,null,null,null,null,null,emailEditText.getText().toString(),FirebaseAuth.getInstance().getCurrentUser().getUid(),null);
+                    FirebaseFirestore.getInstance().collection("users").document().set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(RegisterActivity.this, "User Registered Successfully!", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                            new PreferenceGetter(RegisterActivity.this).putBoolean(PreferenceGetter.IS_REGISTERED,true);
+                            progressBar.setVisibility(View.GONE);
+                            startActivity(new Intent(RegisterActivity.this,HomeActivity.class));
+                            finish();
+                        }
+                    });
+                }else{
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(RegisterActivity.this, "Please Complete all the Form", Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    });
+                }
+                isFormComplete = 0;
+
+            }
+        };
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                Log.d("pwd", "runnable run start");
+                editTexts = new ArrayList<>();
+                editTexts.add(emailEditText);
+                editTexts.add(name);
+                editTexts.add(inputAge);
+                editTexts.add(locationEditText);
+                editTexts.add(hobbyRegisterET);
+                editTexts.add(bioRegisterET);
+                editTexts.add(prologueET);
+                editTexts.add(professionET);
+                editTexts.add(locationEditText);
+
+
+                powerSpinners = new ArrayList<>();
+                powerSpinners.add(genderSpinner);
+                powerSpinners.add(smokingSpinner);
+                powerSpinners.add(religionSpinner);
+                powerSpinners.add(hairStyleSpinner);
+                powerSpinners.add(eyeColorSpinner);
+
+                for(int i =0; i<editTexts.size();i++){
+
+                    if(!(editTexts.get(i).getText().toString().trim().length()>0)){
+                        isFormComplete = 1;
+                        break;
+                    }
+
+                }
+                //String s = getAddress(latitude,longitude);
+                if(isFormComplete==0) {
+                    for (int i = 0; i < powerSpinners.size(); i++) {
+                        if (powerSpinners.get(i).getSelectedIndex() == -1) {
+                            isFormComplete = 1;
+                            break;
+                        }
+                    }
+                }
+                //if(s==null && s.equals("")){isFormComplete=false;}
+
+                Log.d("is form complete aka finale",String.valueOf(isFormComplete));
+                Log.d("pwd: runnable run end", String.valueOf(isFormComplete));
+            }
+        };
+
+        Thread thread = new Thread(new CallbackTask(callback,runnable));
+        progressBar.setVisibility(View.VISIBLE);
+        Log.d("pwd", "thread start");
+        thread.start();
 
     }
 
@@ -257,6 +403,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 // Logic to handle location object
                                 latitude = location.getLatitude();
                                 longitude = location.getLongitude();
+                                Log.v("location pmd","lat:"+ latitude+"lon: "+ longitude);
                                 locationEditText.setText(getAddress(latitude,longitude));
 
                             }
@@ -282,15 +429,12 @@ public class RegisterActivity extends AppCompatActivity {
                 if (grantResults.length > 0 &&
                         grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     new PreferenceGetter(this).putBoolean(PreferenceGetter.HAS_LOCATION_ACCESS,true);
-
+                    getAndUpdateUserLocation();
                 } else {
-                    // Explain to the user that the feature is unavailable because
-                    // the features requires a permission that the user has denied.
-                    // At the same time, respect the user's decision. Don't link to
-                    // system settings in an effort to convince the user to change
-                    // their decision.
+                    //TODO explain user app will not work without perm
+
                 }
-                return;
+
         }
         // Other 'case' lines to check for other
         // permissions this app might request.
@@ -322,9 +466,33 @@ public class RegisterActivity extends AppCompatActivity {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             return null;
         }
+
     }
 
 
 
+    class CallbackTask implements Runnable {
+
+        private Runnable task;
+
+        private final com.brobia.pixelmeet.Callback callback;
+
+
+        public CallbackTask(Callback callback, Runnable task) {
+            this.task = task;
+            this.callback = callback;
+        }
+
+        @Override
+        public void run() {
+            task.run();
+
+
+
+            callback.onComplete();
+
+        }
+
+    }
 
 }

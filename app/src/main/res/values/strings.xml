@@ -1,4 +1,16 @@
 <resources>
+    <string name="client_id">846703774795-di8vq663skfsqla2k4ekk66mu7716ko4.apps.googleusercontent.com</string>
+
+    <!--    facebook login thing-->
+    <string name="facebook_app_id">434319368165935</string>
+    <string name="fb_login_protocol_scheme">fb1234</string>
+    <string name="facebook_client_token">EAAGLAtuomi8BAEeor3sCf2Uez78uY3iI6XIjzBfxsyP4Pp6aP72Pw5ouOMmjIsKA0escVmTUXXiXZB0h2lj2BsTiLlzdtmsfNqQYjZB2A5ZAxxSoKFA7xeit1ymXs22DOGzWkMSrlszkB1d1cRzSIxazZATGpKbxZBQi1MJUyEB2geyMFRj34OcgXtKvkIMiRzBVSSLDZCBhZCSHnVIP6uOWsJ93EhCDmc2msDGtfxbW5B2aJjRZA9tw</string>
+
+<!--    google login thing-->
+    <string name="firebase_web_client_id">159870854240-7rfsinj3tv5j831r6av83j41oqv0722d.apps.googleusercontent.com</string>
+    <string name="google_web_client_id">846703774795-h101ia5u8o4fm43era8ipn3nlnh2nm2u.apps.googleusercontent.com</string>
+
+
     <string name="app_name">Pixel Meet</string>
     <string name="welcome_to_pixel_meet">Welcome to Pixel Meet Stranger</string>
     <string name="app_description1">Pixel meet is intended for any person from the age of 18 years. It is a meeting platform with certain extras. After creating an account we recommend to read the short tutorial. It will help you in short steps how Pixel Meet, Pixel token and the earning system works.</string>
@@ -17,6 +29,8 @@
     <string name="date">Date</string>
     <string name="age">Age</string>
     <string name="gender">Gender</string>
+    <string name="prologue">Prologue</string>
+    <string name="profession">Profession</string>
     <string name="DOB">Date of Birth</string>
     <string name="login">Login</string>
     <string name="location">Location</string>
@@ -28,4 +42,5 @@
     <string name="hobby">Hobby</string>
     <string name="smoking">Smoking</string>
     <string name="bio">Bio</string>
+    <string name="password">Password</string>
 </resources>
