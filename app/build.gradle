@@ -15,7 +15,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-
+        multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -28,10 +28,12 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    lintOptions {
+        checkReleaseBuilds false
+    }
 }
 
 dependencies {
-
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.6.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
@@ -56,11 +58,12 @@ dependencies {
     //power spinner
     implementation "com.github.skydoves:powerspinner:1.1.7"
 
-    //loading screens spinkit
-    //implementation 'com.github.ybq:Android-SpinKit:1.4.0'
-
     //facebook login
     implementation 'com.facebook.android:facebook-android-sdk:latest.release'
 
+    //picasso
+    implementation 'com.squareup.picasso:picasso:2.8'
+
+    implementation project(':library')
 
 }

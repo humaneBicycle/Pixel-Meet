@@ -18,7 +18,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.PixelMeet">
+        android:theme="@style/Theme.PixelMeet"
+        android:name=".PixelMeet">
         <activity
             android:name=".EmailLoginActivity"
             android:exported="false" />

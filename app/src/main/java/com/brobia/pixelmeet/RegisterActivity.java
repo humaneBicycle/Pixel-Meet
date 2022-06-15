@@ -1,5 +1,6 @@
 package com.brobia.pixelmeet;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -30,9 +31,12 @@ import com.aminography.primedatepicker.picker.callback.SingleDayPickCallback;
 import com.brobia.pixelmeet.model.User;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.skydoves.powerspinner.PowerSpinnerView;
 
 import java.io.IOException;
@@ -175,9 +179,7 @@ public class RegisterActivity extends AppCompatActivity {
                     getAndUpdateUserLocation();
                 }else{
                     requestPermissions(new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, LOCATION_ACCESS_CODE);
-
                 }
-
             }
         });
 
@@ -302,32 +304,49 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void run() {
                 Log.d("pwd", "runnable run start");
-                editTexts = new ArrayList<>();
-                editTexts.add(emailEditText);
-                editTexts.add(name);
-                editTexts.add(inputAge);
-                editTexts.add(locationEditText);
-                editTexts.add(hobbyRegisterET);
-                editTexts.add(bioRegisterET);
-                editTexts.add(prologueET);
-                editTexts.add(professionET);
-                editTexts.add(locationEditText);
-
-
-                powerSpinners = new ArrayList<>();
-                powerSpinners.add(genderSpinner);
-                powerSpinners.add(smokingSpinner);
-                powerSpinners.add(religionSpinner);
-                powerSpinners.add(hairStyleSpinner);
-                powerSpinners.add(eyeColorSpinner);
-
-                for(int i =0; i<editTexts.size();i++){
-
-                    if(!(editTexts.get(i).getText().toString().trim().length()>0)){
-                        isFormComplete = 1;
-                        break;
+                FirebaseFirestore.getInstance().collection("users").whereEqualTo("email",emailEditText.getText().toString()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            if(task.getResult().isEmpty()){
+                                isFormComplete=1;
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(RegisterActivity.this, "Email Id already registered. Please login first.", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        }
                     }
+                });
+                if(isFormComplete==0) {
+                    editTexts = new ArrayList<>();
+                    editTexts.add(emailEditText);
+                    editTexts.add(name);
+                    editTexts.add(inputAge);
+                    editTexts.add(locationEditText);
+                    editTexts.add(hobbyRegisterET);
+                    editTexts.add(bioRegisterET);
+                    editTexts.add(prologueET);
+                    editTexts.add(professionET);
+                    editTexts.add(locationEditText);
 
+                    powerSpinners = new ArrayList<>();
+                    powerSpinners.add(genderSpinner);
+                    powerSpinners.add(smokingSpinner);
+                    powerSpinners.add(religionSpinner);
+                    powerSpinners.add(hairStyleSpinner);
+                    powerSpinners.add(eyeColorSpinner);
+                }
+
+                if(isFormComplete==0) {
+                    for (int i = 0; i < editTexts.size(); i++) {
+                        if (!(editTexts.get(i).getText().toString().trim().length() > 0)) {
+                            isFormComplete = 1;
+                            break;
+                        }
+                    }
                 }
                 //String s = getAddress(latitude,longitude);
                 if(isFormComplete==0) {
@@ -339,7 +358,6 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 }
                 //if(s==null && s.equals("")){isFormComplete=false;}
-
                 Log.d("is form complete aka finale",String.valueOf(isFormComplete));
                 Log.d("pwd: runnable run end", String.valueOf(isFormComplete));
             }
@@ -360,7 +378,6 @@ public class RegisterActivity extends AppCompatActivity {
             screenTwo.setVisibility(View.GONE);
             screenOne.setVisibility(View.VISIBLE);
             setActiveDot(0);
-
         }
 
         if (layout.getTag().toString().equals("screen_three")) {
@@ -371,8 +388,6 @@ public class RegisterActivity extends AppCompatActivity {
             screenThree.setVisibility(View.GONE);
             setActiveDot(1);
         }
-
-        //prev.setBackground(getResources().getDrawable(R.drawable.green_background));
     }
 
 
@@ -388,8 +403,6 @@ public class RegisterActivity extends AppCompatActivity {
         }else{
             return null;
         }
-
-
     }
 
     private void getAndUpdateUserLocation(){
@@ -432,12 +445,8 @@ public class RegisterActivity extends AppCompatActivity {
                     getAndUpdateUserLocation();
                 } else {
                     //TODO explain user app will not work without perm
-
                 }
-
         }
-        // Other 'case' lines to check for other
-        // permissions this app might request.
     }
 
     public String getAddress(double lat, double lng) {

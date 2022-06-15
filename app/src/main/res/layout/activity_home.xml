@@ -6,4 +6,161 @@
     android:layout_height="match_parent"
     tools:context=".HomeActivity">
 
+
+    <ImageView
+        android:id="@+id/background_home_activity"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/background1" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+
+            <ImageView
+                android:id="@+id/messages_home_activity"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_margin="4dp"
+                android:src="@drawable/messages_icon_white"
+                app:layout_constraintEnd_toStartOf="@+id/configuration_home_activity"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/configuration_home_activity"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_margin="4dp"
+                android:src="@drawable/configuration_icon_white"
+                app:layout_constraintEnd_toStartOf="@+id/settings_home_activity"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/settings_home_activity"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_margin="4dp"
+                android:src="@drawable/settings_icon_white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/name_home_activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="24dp"
+            android:layout_marginTop="72dp"
+            android:fontFamily="@font/robotomonobold"
+            android:textSize="48sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </LinearLayout>
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:visibility="invisible"/>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/home_fragment_container"/>
+    </LinearLayout>
+
+
+    <ImageView
+        android:id="@+id/avatar_home_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="96dp"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="72dp">
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="28.23dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/chest"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/inventory_image_view_home"/>
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="40dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/wallet"
+            app:layout_constraintEnd_toStartOf="@+id/settings_home_activity"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/wallet_image_view_home"/>
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progress_home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/background_home_activity"
+        android:visibility="invisible"/>
+
+    <LinearLayout
+        android:id="@+id/home_loading_screen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="vertical"
+        android:background="@drawable/background1">
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/progress_bar_splash_screen_home_activity"
+            android:layout_gravity="center"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,27 @@
+apply plugin: 'com.android.library'
+
+android {
+
+    compileSdkVersion 30
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 30
+    }
+
+    lintOptions {
+        abortOnError false
+        checkReleaseBuilds false
+    }
+}
+
+
+//publish {
+//    userOrg = 'ybq'
+//    groupId = 'com.github.ybq'
+//    artifactId = 'Android-SpinKit'
+//    publishVersion = '1.4.0'
+//    desc = 'Android loading animations'
+//    website = 'https://github.com/ybq/Android-SpinKit'
+//    licences = ['MIT']
+//}
