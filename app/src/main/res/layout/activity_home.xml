@@ -6,13 +6,44 @@
     android:layout_height="match_parent"
     tools:context=".HomeActivity">
 
-
     <ImageView
         android:id="@+id/background_home_activity"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
         android:src="@drawable/background1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/active_background_home_activity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:scaleType="centerCrop"/>
+            <ImageView
+                android:id="@+id/avatar_home_activity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+        </RelativeLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/home_fragment_container"/>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout3"
@@ -27,6 +58,15 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
+            <ImageView
+                android:id="@+id/home_button_home_activity"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_margin="4dp"
+                android:src="@drawable/home_icon_white"
+                app:layout_constraintEnd_toStartOf="@+id/configuration_home_activity"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <View
                 android:layout_width="0dp"
                 android:layout_height="0dp"
@@ -35,8 +75,8 @@
 
             <ImageView
                 android:id="@+id/messages_home_activity"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_margin="4dp"
                 android:src="@drawable/messages_icon_white"
                 app:layout_constraintEnd_toStartOf="@+id/configuration_home_activity"
@@ -44,8 +84,8 @@
 
             <ImageView
                 android:id="@+id/configuration_home_activity"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_margin="4dp"
                 android:src="@drawable/configuration_icon_white"
                 app:layout_constraintEnd_toStartOf="@+id/settings_home_activity"
@@ -53,14 +93,12 @@
 
             <ImageView
                 android:id="@+id/settings_home_activity"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_margin="4dp"
                 android:src="@drawable/settings_icon_white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-
         </LinearLayout>
 
         <TextView
@@ -76,45 +114,13 @@
             app:layout_constraintTop_toTopOf="parent" />
     </LinearLayout>
 
-
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="2"
-            android:visibility="invisible"/>
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="5"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:id="@+id/home_fragment_container"/>
-    </LinearLayout>
-
-
-    <ImageView
-        android:id="@+id/avatar_home_activity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="96dp"/>
-
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="72dp">
+        android:layout_marginTop="96dp">
 
         <ImageView
             android:layout_width="48dp"
@@ -137,7 +143,7 @@
     </LinearLayout>
 
     <ProgressBar
-        android:id="@+id/progress_home"
+        android:id="@+id/progress_home_simple"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -146,21 +152,23 @@
         app:layout_constraintTop_toTopOf="@+id/background_home_activity"
         android:visibility="invisible"/>
 
-    <LinearLayout
-        android:id="@+id/home_loading_screen"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:orientation="vertical"
-        android:background="@drawable/background1">
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/progress_bar_splash_screen_home_activity"
-            android:layout_gravity="center"
-            android:layout_weight="1"/>
 
-    </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/home_loading_screen"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:orientation="vertical"
+            android:background="@drawable/background1">
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/progress_bar_splash_screen_home_activity"
+                android:layout_gravity="center"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -30,6 +30,7 @@ android {
     }
     lintOptions {
         checkReleaseBuilds false
+        abortOnError false
     }
 }
 
@@ -45,9 +46,10 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:30.1.0')
     implementation 'com.google.firebase:firebase-firestore'
     implementation 'com.google.android.gms:play-services-auth:20.2.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
 
-    testImplementation 'junit:junit:4.13.2'
+    //testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
@@ -64,6 +66,7 @@ dependencies {
     //picasso
     implementation 'com.squareup.picasso:picasso:2.8'
 
+    //android spinkit
     implementation project(':library')
 
 }

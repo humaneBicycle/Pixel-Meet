@@ -11,6 +11,8 @@ public class NearbyUser {
     //location
     String latitude, longitude, hash;
 
+    public NearbyUser(){}
+
     public NearbyUser(String name, String eyeColor, String gender, String hairstyle, String religion, String hobby, String smoking, String prologue, String bio, String profession, String address, int age, int level, String activePlate, String activeAvatar, String activeBackground, String latitude, String longitude, String hash) {
         this.name = name;
         this.eyeColor = eyeColor;

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class User {
     //personal info
     String name, dob, eyeColor, gender, hairstyle, religion, hobby, smoking, prologue, bio, profession, address;
-    int age, level;
+    int age, level, picks;
 
     //active inventory
     String activePlate, activeAvatar, activeBackground;
@@ -16,10 +16,28 @@ public class User {
     //Identification
     String email, uid;
 
+    public String getDob() {
+        return dob;
+    }
+
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
+
+    public int getPicks() {
+        return picks;
+    }
+
+    public void setPicks(int picks) {
+        this.picks = picks;
+    }
+
     //crypto wallet information
     String walletAddress;
 
-    public User(String name,String dob, String eyeColor, String gender, String hairstyle, String religion, String hobby, String smoking, String prologue, String bio, String profession, String address, int age, int level, String activePlate, String activeAvatar, String activeBackground, ArrayList<String> plates, ArrayList<String> backgrounds, ArrayList<String> avatars, String email, String uid, String walletAddress) {
+    public User(){}
+
+    public User(String name,String dob, String eyeColor, String gender, String hairstyle, String religion, String hobby, String smoking, String prologue, String bio, String profession, String address, int age, int level, String activePlate, String activeAvatar, String activeBackground, ArrayList<String> plates, ArrayList<String> backgrounds, ArrayList<String> avatars, String email, String uid, String walletAddress,int picks) {
         this.name = name;
         this.eyeColor = eyeColor;
         this.gender = gender;
@@ -43,6 +61,7 @@ public class User {
         this.uid = uid;
         this.walletAddress = walletAddress;
         this.dob = dob;
+        this.picks = picks;
     }
 
     public String getName() {

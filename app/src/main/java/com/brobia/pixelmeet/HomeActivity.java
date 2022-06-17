@@ -2,6 +2,8 @@ package com.brobia.pixelmeet;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -19,41 +21,91 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
-
 public class HomeActivity extends AppCompatActivity {
 
-    ImageView avatarImageView, messagesImageVIew, configImageView, settingsImageView, walletImageView, inventoryImageView;
+    ImageView avatarImageView, messagesImageVIew, configImageView, settingsImageView, walletImageView, inventoryImageView, activeBackgroundImageView, homeImageVIew;
     TextView nameTextView;
-    ProgressBar progressBar;
+    ProgressBar progressBarSimple,progressBarSplashScreen;
     LinearLayout splashScreenLoadingLayout;
+    PixelMeet pixelMeet ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        pixelMeet = (PixelMeet)getApplication();
+
+
         FirebaseFirestore.getInstance().collection("users").whereEqualTo("email", FirebaseAuth.getInstance().getCurrentUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()){
                     ((PixelMeet)getApplication()).setUser(task.getResult().toObjects(User.class).get(0));
+                    Picasso.get().load(((PixelMeet) getApplication()).getUser().getActiveAvatar()).into(avatarImageView);
+                    Picasso.get().load(((PixelMeet) getApplication()).getUser().getActiveBackground()).into(activeBackgroundImageView);
+                    getSupportFragmentManager().beginTransaction().add(R.id.home_fragment_container, new HomeFragment()).commit();
+                    progressBarSplashScreen.setVisibility(View.GONE);
                     splashScreenLoadingLayout.setVisibility(View.GONE);
+
                 }
             }
         });
 
         initUI();
 
-        if(FireBaseDataHolder.getUser().getActiveAvatar()==null && FireBaseDataHolder.getUser().getActiveAvatar().trim().length()>0){
-            Picasso.get().load(FireBaseDataHolder.getUser().getActiveAvatar()).into(avatarImageView);
-        }else{
-            Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/pixel-meet-67f55.appspot.com/o/avatar_default.png?alt=media&token=c85a21c4-7fa4-4eb0-aa25-51745aced624").into(avatarImageView);
-        }
+        messagesImageVIew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setActiveView("messages");
+                getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container,new MessagesFragment()).commit();
+                pixelMeet.setActiveFragment("messages");
+            }
+        });
+        settingsImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setActiveView("settings");
+                getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container,new SettingsFragment()).commit();
+                pixelMeet.setActiveFragment("settings");
+            }
+        });
+        configImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setActiveView("config");
+                getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container,new ConfigurationFragment()).commit();
+                pixelMeet.setActiveFragment("config");
+            }
+        });
+        inventoryImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container,new ConfigurationFragment()).commit();
+                pixelMeet.setActiveFragment("inventory");
+            }
+        });
 
+        walletImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container,new ConfigurationFragment()).commit();
+                pixelMeet.setActiveFragment("wallet");
+            }
+        });
+
+        homeImageVIew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container,new ConfigurationFragment()).commit();
+                pixelMeet.setActiveFragment("wallet");
+            }
+        });
 
     }
 
-    private void initUI(){
+    public void initUI(){
         avatarImageView = findViewById(R.id.avatar_home_activity);
         messagesImageVIew = findViewById(R.id.messages_home_activity);
         configImageView = findViewById(R.id.configuration_home_activity);
@@ -62,11 +114,32 @@ public class HomeActivity extends AppCompatActivity {
         inventoryImageView = findViewById(R.id.inventory_image_view_home);
         nameTextView = findViewById(R.id.name_home_activity);
         splashScreenLoadingLayout = findViewById(R.id.home_loading_screen);
-        progressBar = findViewById(R.id.progress_home);
+        progressBarSimple = findViewById(R.id.progress_bar_splash_screen_home_activity);
+        progressBarSplashScreen = findViewById(R.id.progress_home_simple);
+        activeBackgroundImageView = findViewById(R.id.active_background_home_activity);
+        homeImageVIew = findViewById(R.id.home_button_home_activity);
 
         Sprite sprite = new CubeGrid();
-        progressBar.setIndeterminateDrawable(sprite);
+        sprite.setColor(Color.BLUE);
+        progressBarSplashScreen.setIndeterminateDrawable(sprite);
+        progressBarSimple.setIndeterminateDrawable(sprite);
 
+    }
+
+    private void setActiveView(String activeView){
+        if(activeView.equals("settings")) {
+            messagesImageVIew.setBackground(getDrawable(R.drawable.messages_icon_white));
+            configImageView.setBackground(getDrawable(R.drawable.configuration_icon_white));
+            settingsImageView.setBackground(getDrawable(R.drawable.settings_icon_green));
+        }else if (activeView.equals("config") ){
+            messagesImageVIew.setBackground(getDrawable(R.drawable.messages_icon_white));
+            settingsImageView.setBackground(getDrawable(R.drawable.settings_icon_white));
+            configImageView.setBackground(getDrawable(R.drawable.configuration_icon_green));
+        }else if(activeView.equals("messages")) {
+            settingsImageView.setBackground(getDrawable(R.drawable.settings_icon_white));
+            configImageView.setBackground(getDrawable(R.drawable.configuration_icon_white));
+            messagesImageVIew.setBackground(getDrawable(R.drawable.messages_icon_green));
+        }
 
     }
 }

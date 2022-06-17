@@ -6,7 +6,7 @@
     <string name="fb_login_protocol_scheme">fb1234</string>
     <string name="facebook_client_token">EAAGLAtuomi8BAEeor3sCf2Uez78uY3iI6XIjzBfxsyP4Pp6aP72Pw5ouOMmjIsKA0escVmTUXXiXZB0h2lj2BsTiLlzdtmsfNqQYjZB2A5ZAxxSoKFA7xeit1ymXs22DOGzWkMSrlszkB1d1cRzSIxazZATGpKbxZBQi1MJUyEB2geyMFRj34OcgXtKvkIMiRzBVSSLDZCBhZCSHnVIP6uOWsJ93EhCDmc2msDGtfxbW5B2aJjRZA9tw</string>
 
-<!--    google login thing-->
+    <!--    google login thing-->
     <string name="firebase_web_client_id">159870854240-7rfsinj3tv5j831r6av83j41oqv0722d.apps.googleusercontent.com</string>
     <string name="google_web_client_id">846703774795-h101ia5u8o4fm43era8ipn3nlnh2nm2u.apps.googleusercontent.com</string>
 
@@ -43,4 +43,9 @@
     <string name="smoking">Smoking</string>
     <string name="bio">Bio</string>
     <string name="password">Password</string>
+    <string name="settings">Settings</string>
+    <string name="messages">Message</string>
+    <string name="config">Configuration</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
