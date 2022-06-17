@@ -23,15 +23,20 @@ import com.squareup.picasso.Picasso;
 public class HomeFragment extends Fragment {
 
     ImageView plate;
+    static HomeFragment fragment;
 
     public HomeFragment() {
         // Required empty public constructor
     }
 
-    public static HomeFragment newInstance(String param1, String param2) {
-        HomeFragment fragment = new HomeFragment();
 
-        return fragment;
+    public static HomeFragment getInstance(){
+        if(fragment!=null){
+            return fragment;
+        }else{
+            fragment = new HomeFragment();
+            return fragment;
+        }
     }
 
     @Override

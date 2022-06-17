@@ -6,44 +6,60 @@
     android:layout_height="match_parent"
     tools:context=".HomeActivity">
 
-    <ImageView
-        android:id="@+id/background_home_activity"
+    <RelativeLayout
+        android:id="@+id/relative_home"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@drawable/background1" />
+        android:orientation="vertical"
+        >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:id="@+id/active_background_home_activity"
-                android:layout_width="match_parent"
+
+
+                <ImageView
+                    android:id="@+id/active_background_home_activity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitStart"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:adjustViewBounds="true"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <ImageView
+                    android:id="@+id/avatar_home_activity"
+                    android:layout_width="148dp"
+                    android:layout_height="148dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="72dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/name_home_activity"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:scaleType="centerCrop"/>
-            <ImageView
-                android:id="@+id/avatar_home_activity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
-        </RelativeLayout>
+                android:layout_margin="24dp"
+                android:layout_marginTop="72dp"
+                android:fontFamily="@font/robotomonobold"
+                android:textSize="24sp"
+                android:textColor="@color/white"
+                android:layout_centerHorizontal="true"
+                android:maxLength="8"
+                android:padding="8dp"/>
+
+
 
         <FrameLayout
+            android:id="@+id/home_fragment_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:id="@+id/home_fragment_container"/>
-    </LinearLayout>
+            android:layout_alignParentBottom="true"
+            android:layout_below="@id/active_background_home_activity"
+            android:layout_marginTop="-66dp"
+            app:layout_constraintStart_toStartOf="parent" />
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout3"
@@ -71,7 +87,6 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_weight="1" />
-
 
             <ImageView
                 android:id="@+id/messages_home_activity"
@@ -101,17 +116,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/name_home_activity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="24dp"
-            android:layout_marginTop="72dp"
-            android:fontFamily="@font/robotomonobold"
-            android:textSize="48sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -143,32 +148,12 @@
     </LinearLayout>
 
     <ProgressBar
-        android:id="@+id/progress_home_simple"
+        android:id="@+id/progress_home_activity_simple"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/background_home_activity"
-        android:visibility="invisible"/>
-
-
-
-        <LinearLayout
-            android:id="@+id/home_loading_screen"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:orientation="vertical"
-            android:background="@drawable/background1">
-            <ProgressBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/progress_bar_splash_screen_home_activity"
-                android:layout_gravity="center"
-                android:layout_weight="1"/>
-
-        </LinearLayout>
+        app:layout_constraintTop_toTopOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

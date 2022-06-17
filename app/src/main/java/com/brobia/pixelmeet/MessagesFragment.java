@@ -15,22 +15,22 @@ import android.view.ViewGroup;
  */
 public class MessagesFragment extends Fragment {
 
+    static MessagesFragment fragment;
 
     public MessagesFragment() {
         // Required empty public constructor
     }
 
-    public static MessagesFragment newInstance(String param1, String param2) {
-        MessagesFragment fragment = new MessagesFragment();
-
-        return fragment;
+    public static MessagesFragment getInstance() {
+        if(fragment!=null) {
+            return fragment;
+        }else{
+            fragment = new MessagesFragment();
+            return fragment;
+        }
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
