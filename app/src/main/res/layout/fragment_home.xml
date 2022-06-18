@@ -5,13 +5,219 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/plate_background_home_fragment"
+        <ImageView
+            android:id="@+id/plate_background_home_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:scaleType="fitXY"/>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:fontFamily="@font/robotomonoregular"
+            android:text="@string/home"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:id="@+id/imageView2"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_marginTop="-12dp"
+            android:background="@drawable/thin_plate"
+            android:gravity="center"
+            android:layout_marginStart="72dp"
+            android:layout_marginEnd="72dp"
+            app:layout_constraintTop_toBottomOf="@id/upper_rounded_corners_thin_plate_home_frag" >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/picks_available"
+                android:fontFamily="@font/robotomonoregular"
+                android:textSize="12sp"
+                android:layout_marginRight="12dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/picks_available_textview_home_frag"
+                android:fontFamily="@font/robotomonoregular"
+                android:textSize="12sp"
+                android:layout_marginLeft="12dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="48dp"
+            android:layout_marginEnd="48dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/upper_rounded_corners_thin_plate"
+            android:id="@+id/upper_rounded_corners_thin_plate_home_frag"
+            app:layout_constraintTop_toBottomOf="@id/textView">
+
+            <SeekBar
+                android:id="@+id/seekBar_time_left"
+                android:layout_width="match_parent"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginStart="8dp"
+                android:layout_height="wrap_content"
+                android:progressDrawable="@drawable/green_seekbar"
+                android:clickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:thumbTint="@color/transparent"
+                android:max="1"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/next_free_coin"
+                    android:fontFamily="@font/robotomonoregular"
+                    android:textSize="12sp"
+                    android:layout_weight="1"
+                    android:textAlignment="center"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/robotomonoregular"
+                    android:id="@+id/time_left_home_frag"
+                    android:textSize="12sp"
+                    android:layout_weight="1"
+                    android:textColor="@color/green"
+                    android:layout_marginLeft="12dp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/imageView2"
+            android:layout_marginTop="4dp"
+            android:id="@+id/free_coin_button_home_frag">
+
+            <ImageView
+                android:id="@+id/free_coins_image_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/round_button_bg" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:fontFamily="@font/robotomonoregular"
+                android:padding="2dp"
+                android:text="@string/free_coins"
+                android:textAlignment="center"
+                android:textSize="12sp" />
+
+        </RelativeLayout>
+
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:scaleType="fitXY"/>
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="@+id/plate_background_home_fragment"
+        app:layout_constraintTop_toBottomOf="@+id/free_coin_button_home_frag">
+
+
+        <LinearLayout
+            android:id="@+id/profile_button_fragment_home"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginBottom="2dp"
+            android:layout_toRightOf="@id/collect_button_fragment_home"
+            android:background="@drawable/profile_photo_bg"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/robotomonoregular"
+                android:text="@string/profile"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="24sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/collect_button_fragment_home"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_margin="2dp"
+            android:background="@drawable/collect_photo_bg"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/robotomonoregular"
+                android:text="@string/collect"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="24sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/market_place_button_fragment_home"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_below="@+id/collect_button_fragment_home"
+            android:layout_margin="2dp"
+            android:background="@drawable/marketplace_bg_photo"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/robotomonoregular"
+                android:text="@string/market_place"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="17sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/swipe_button_fragment_home"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_below="@id/profile_button_fragment_home"
+            android:layout_margin="2dp"
+            android:layout_toRightOf="@id/market_place_button_fragment_home"
+            android:background="@drawable/swipe_bg_photo"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/robotomonoregular"
+                android:text="@string/swipe"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="24sp" />
+        </LinearLayout>
+
+    </RelativeLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

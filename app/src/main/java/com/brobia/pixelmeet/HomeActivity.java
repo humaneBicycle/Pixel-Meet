@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 public class HomeActivity extends AppCompatActivity {
@@ -41,9 +42,24 @@ public class HomeActivity extends AppCompatActivity {
                     ((PixelMeet)getApplication()).setUser(task.getResult().toObjects(User.class).get(0));
                     nameTextView.setText(pixelMeet.getUser().getName());
                     Picasso.get().load(((PixelMeet) getApplication()).getUser().getActiveAvatar()).into(avatarImageView);
-                    Picasso.get().load(((PixelMeet) getApplication()).getUser().getActiveBackground()).into(activeBackgroundImageView);
-                    getSupportFragmentManager().beginTransaction().add(R.id.home_fragment_container, HomeFragment.getInstance()).commit();
-                    progressBarSimple.setVisibility(View.GONE);
+                    Picasso.get().load(((PixelMeet) getApplication()).getUser().getActiveBackground()).into(activeBackgroundImageView, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            HomeFragment fragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag("home");
+                            if(fragment!=null) {
+                                getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, fragment, "home").commit();
+                            }else{
+                                getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, new HomeFragment(), "home").commit();
+                            }
+                            progressBarSimple.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+
+                        }
+                    });
+
 
                 }
             }
@@ -56,7 +72,12 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 setActiveView(2);
-                getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container,MessagesFragment.getInstance()).commit();
+                MessagesFragment fragment = (MessagesFragment) getSupportFragmentManager().findFragmentByTag("messages");
+                if(fragment!=null) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, fragment, "messages").commit();
+                }else{
+                    getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, new MessagesFragment(), "messages").commit();
+                }
                 pixelMeet.setActiveFragment("messages");
             }
         });
@@ -64,7 +85,12 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 setActiveView(0);
-                getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container,SettingsFragment.getInstance()).commit();
+                SettingsFragment fragment = (SettingsFragment) getSupportFragmentManager().findFragmentByTag("settings");
+                if(fragment!=null) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, fragment, "settings").commit();
+                }else{
+                    getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, new SettingsFragment(), "setings").commit();
+                }
                 pixelMeet.setActiveFragment("settings");
             }
         });
@@ -72,14 +98,24 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 setActiveView(1);
-                getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container,ConfigurationFragment.getInstance()).commit();
+                ConfigurationFragment fragment = (ConfigurationFragment) getSupportFragmentManager().findFragmentByTag("config");
+                if(fragment!=null) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, fragment, "config").commit();
+                }else{
+                    getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, new ConfigurationFragment(), "config").commit();
+                }
                 pixelMeet.setActiveFragment("config");
             }
         });
         inventoryImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container,InventoryFragment.getInstance()).commit();
+                InventoryFragment fragment = (InventoryFragment) getSupportFragmentManager().findFragmentByTag("inventory");
+                if(fragment!=null) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, fragment, "inventory").commit();
+                }else{
+                    getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, new InventoryFragment(), "inventory").commit();
+                }
                 pixelMeet.setActiveFragment("inventory");
             }
         });
@@ -87,7 +123,12 @@ public class HomeActivity extends AppCompatActivity {
         walletImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container,WalletFragment.getInstance()).commit();
+                WalletFragment fragment = (WalletFragment) getSupportFragmentManager().findFragmentByTag("wallet");
+                if(fragment!=null) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, fragment, "wallet").commit();
+                }else{
+                    getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, new WalletFragment(), "wallet").commit();
+                }
                 pixelMeet.setActiveFragment("wallet");
             }
         });
@@ -96,7 +137,12 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 setActiveView(3);
-                getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, HomeFragment.getInstance()).commit();
+                HomeFragment homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag("home");
+                if(homeFragment!=null) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, homeFragment, "home").commit();
+                }else{
+                    getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, new HomeFragment(), "home").commit();
+                }
                 pixelMeet.setActiveFragment("home");
             }
         });
@@ -146,4 +192,5 @@ public class HomeActivity extends AppCompatActivity {
         }
 
     }
+
 }

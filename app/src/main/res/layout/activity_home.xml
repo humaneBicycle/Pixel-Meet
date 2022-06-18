@@ -79,7 +79,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_margin="4dp"
-                android:src="@drawable/home_icon_white"
+                android:src="@drawable/home_icon_green"
                 app:layout_constraintEnd_toStartOf="@+id/configuration_home_activity"
                 app:layout_constraintTop_toTopOf="parent" />
 

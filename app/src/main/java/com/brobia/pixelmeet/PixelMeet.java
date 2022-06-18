@@ -25,4 +25,6 @@ public class PixelMeet extends Application {
     public void setUser(User user) {
         PixelMeet.user = user;
     }
+
+
 }
