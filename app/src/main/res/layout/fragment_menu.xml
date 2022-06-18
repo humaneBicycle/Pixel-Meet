@@ -6,15 +6,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".MenuFragment">
 
-
     <ImageView
         android:id="@+id/plate_background_menu_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="8dp"
         android:scaleType="fitXY"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:fontFamily="@font/robotomonoregular"
+        android:text="@string/menu"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -48,19 +57,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/menu_lounge" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/menu_settings"
-            android:layout_width="225dp"
-            android:layout_height="30dp"
-            android:layout_margin="8dp"
-            android:background="@drawable/round_button_bg"
-            android:fontFamily="@font/robotomonoregular"
-            android:text="@string/settings"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/menu_lounge" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/menu_wallet"

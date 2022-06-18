@@ -60,6 +60,7 @@
     <string name="support_and_contact">Support and Contact</string>
     <string name="quests">Quests</string>
     <string name="inventory">Inventory</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="menu">Menu</string>
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

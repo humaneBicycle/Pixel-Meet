@@ -42,8 +42,10 @@
         <entry key="..\:/Storage/code/Project 2/PixelMeet/app/src/main/res/layout/activity_register.xml" value="0.25" />
         <entry key="..\:/Storage/code/Project 2/PixelMeet/app/src/main/res/layout/drop_down_item_spinner.xml" value="0.2203125" />
         <entry key="..\:/Storage/code/Project 2/PixelMeet/app/src/main/res/layout/fragment_configuration.xml" value="0.225" />
-        <entry key="..\:/Storage/code/Project 2/PixelMeet/app/src/main/res/layout/fragment_home.xml" value="0.4" />
+        <entry key="..\:/Storage/code/Project 2/PixelMeet/app/src/main/res/layout/fragment_contact_and_support.xml" value="0.19322916666666667" />
+        <entry key="..\:/Storage/code/Project 2/PixelMeet/app/src/main/res/layout/fragment_home.xml" value="0.176" />
         <entry key="..\:/Storage/code/Project 2/PixelMeet/app/src/main/res/layout/fragment_inventory.xml" value="0.225" />
+        <entry key="..\:/Storage/code/Project 2/PixelMeet/app/src/main/res/layout/fragment_lounge.xml" value="0.15833333333333333" />
         <entry key="..\:/Storage/code/Project 2/PixelMeet/app/src/main/res/layout/fragment_menu.xml" value="0.2203125" />
         <entry key="..\:/Storage/code/Project 2/PixelMeet/app/src/main/res/layout/fragment_messages.xml" value="0.10235507246376811" />
         <entry key="..\:/Storage/code/Project 2/PixelMeet/app/src/main/res/layout/fragment_profile.xml" value="0.2203125" />
