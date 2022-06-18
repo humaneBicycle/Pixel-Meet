@@ -199,39 +199,40 @@ public class LoginActivity extends AppCompatActivity {
         return emailAlreadyExist;
     }
 
-    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
-        try {
-            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            Log.d("pwd", "handleSignInResult: sign in using google successful.");
-            firebaseAuthWithGoogle(account.getIdToken());
-            Log.d("pwd", "handleSignInResult: credentials stored with firebase");
-            Toast.makeText(this, "SIgn in using " + account.getEmail()+account.getIdToken(), Toast.LENGTH_SHORT).show();
-
-            Log.d("pwd", "handleSignInResult: credentials stored with firebase"+account.getIdToken()+account.getEmail());
-
-            // Signed in successfully, show authenticated UI.
-            loginHandler(account.getEmail(),true);
-//            doesUserWithThisMailExist(account.getEmail());
-//            if(emailAlreadyExist){
-//                startActivity(new Intent(LoginActivity.this,HomeActivity.class));
-//                new PreferenceGetter(this).putBoolean(PreferenceGetter.IS_SIGNED_IN,true);
-//            }
-            //TODO updateUI(account);
-        } catch (ApiException e) {
-            // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Log.w("handleSignInresult", "signInResult:" +e.getStatus() + e.getMessage());
-            Toast.makeText(this, "SIgn In Failed. Please try again later.", Toast.LENGTH_SHORT).show();
-            //TODO updateUI(null);
-        }
-    }
+//    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+//        try {
+//            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+//            Log.d("pwd", "handleSignInResult: sign in using google successful.");
+//            firebaseAuthWithGoogle(account.getIdToken());
+//            Log.d("pwd", "handleSignInResult: credentials stored with firebase");
+//            Toast.makeText(this, "SIgn in using " + account.getEmail(), Toast.LENGTH_SHORT).show();
+//
+//            Log.d("pwd", "handleSignInResult: credentials stored with firebase"+account.getIdToken()+account.getEmail());
+//
+//            // Signed in successfully, show authenticated UI.
+//            loginHandler(account.getEmail(),true);
+////            doesUserWithThisMailExist(account.getEmail());
+////            if(emailAlreadyExist){
+////                startActivity(new Intent(LoginActivity.this,HomeActivity.class));
+////                new PreferenceGetter(this).putBoolean(PreferenceGetter.IS_SIGNED_IN,true);
+////            }
+//            //TODO updateUI(account);
+//        } catch (ApiException e) {
+//            // The ApiException status code indicates the detailed failure reason.
+//            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+//            Log.w("handleSignInresult", "signInResult:" +e.getStatus() + e.getMessage());
+//            Toast.makeText(this, "SIgn In Failed. Please try again later.", Toast.LENGTH_SHORT).show();
+//            //TODO updateUI(null);
+//        }
+//    }
 
     private void loginHandler(String email, boolean isLoginSuccessful){
         if(isLoginSuccessful){
             doesUserWithThisMailExist(email);
-            if(emailAlreadyExist){
+            if(isLoginSuccessful){
                 startActivity(new Intent(LoginActivity.this,HomeActivity.class));
                 new PreferenceGetter(this).putBoolean(PreferenceGetter.IS_SIGNED_IN,true);
+                new PreferenceGetter(this).putBoolean(PreferenceGetter.IS_REGISTERED,true);
                 finish();
             }else{
                 startActivity(new Intent(LoginActivity.this,RegisterActivity.class).putExtra("email",email));
@@ -252,11 +253,17 @@ public class LoginActivity extends AppCompatActivity {
             // The Task returned from this call is always completed, no need to attach
             // a listener.
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            handleSignInResult(task);
+            try {
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+            firebaseAuthWithGoogle(account.getIdToken(), account.getEmail());
+
+            } catch (ApiException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    private void firebaseAuthWithGoogle(String idToken) {
+    private void firebaseAuthWithGoogle(String idToken, String mail) {
         Log.d("pwd", "firebaseAuthWithGoogle: started");
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         mAuth.signInWithCredential(credential)
@@ -266,6 +273,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("pwd", "signInWithCredential:success");
+                            loginHandler(mail,true);
                             //FirebaseUser user = mAuth.getCurrentUser();
                             //updateUI(user);
                         } else {

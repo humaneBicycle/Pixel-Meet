@@ -56,10 +56,49 @@ public class HomeFragment extends Fragment {
             public void onClick(View view) {
                 ProfileFragment fragment = (ProfileFragment) getActivity().getSupportFragmentManager().findFragmentByTag("profile");
                 if(fragment!=null) {
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, fragment, "profile").commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, fragment, "profile").addToBackStack(null).commit();
                 }else{
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, new ProfileFragment(), "profile").commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, new ProfileFragment(), "profile").addToBackStack(null).commit();
                 }
+                pixelMeet.setActiveFragment("profile");
+            }
+        });
+
+        swipe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SwipeFragment fragment = (SwipeFragment) getActivity().getSupportFragmentManager().findFragmentByTag("swipe");
+                if(fragment!=null) {
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, fragment, "swipe").addToBackStack(null).commit();
+                }else{
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, new SwipeFragment(), "swipe").addToBackStack(null).commit();
+                }
+                pixelMeet.setActiveFragment("swipe");
+            }
+        });
+
+        marketplace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MarketPlaceFragment fragment = (MarketPlaceFragment) getActivity().getSupportFragmentManager().findFragmentByTag("marketplace");
+                if(fragment!=null) {
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, fragment, "marketplace").addToBackStack(null).commit();
+                }else{
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, new MarketPlaceFragment(), "marketplace").addToBackStack(null).commit();
+                }
+                pixelMeet.setActiveFragment("marketplace");
+            }
+        });
+        collect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                QuestsFragment fragment = (QuestsFragment) getActivity().getSupportFragmentManager().findFragmentByTag("quests");
+                if(fragment!=null) {
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, fragment, "quests").addToBackStack(null).commit();
+                }else{
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, new QuestsFragment(), "quests").addToBackStack(null).commit();
+                }
+                pixelMeet.setActiveFragment("quests");
             }
         });
 

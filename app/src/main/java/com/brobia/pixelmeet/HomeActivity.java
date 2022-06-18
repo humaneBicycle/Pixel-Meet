@@ -21,7 +21,7 @@ import com.squareup.picasso.Picasso;
 
 public class HomeActivity extends AppCompatActivity {
 
-    ImageView avatarImageView, messagesImageVIew, configImageView, settingsImageView, walletImageView, inventoryImageView, activeBackgroundImageView, homeImageVIew;
+    ImageView avatarImageView, messagesImageVIew, configImageView, settingsImageView, walletImageView, inventoryImageView, activeBackgroundImageView, homeImageVIew, menuImageView;
     TextView nameTextView;
     ProgressBar progressBarSimple;
     PixelMeet pixelMeet ;
@@ -138,12 +138,27 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 setActiveView(3);
                 HomeFragment homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag("home");
+
                 if(homeFragment!=null) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, homeFragment, "home").commit();
                 }else{
                     getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, new HomeFragment(), "home").commit();
                 }
                 pixelMeet.setActiveFragment("home");
+            }
+        });
+        menuImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setActiveView(4);
+                MenuFragment menu = (MenuFragment) getSupportFragmentManager().findFragmentByTag("menu");
+
+                if(menu!=null) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, menu, "menu").commit();
+                }else{
+                    getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, new MenuFragment(), "menu").commit();
+                }
+                pixelMeet.setActiveFragment("menu");
             }
         });
 
@@ -161,6 +176,7 @@ public class HomeActivity extends AppCompatActivity {
         activeBackgroundImageView = findViewById(R.id.active_background_home_activity);
         homeImageVIew = findViewById(R.id.home_button_home_activity);
         nameTextView = findViewById(R.id.name_home_activity);
+        menuImageView = findViewById(R.id.menu_button_home_activity);
 
         Sprite sprite = new CubeGrid();
         sprite.setColor(getColor(R.color.white));
@@ -174,21 +190,31 @@ public class HomeActivity extends AppCompatActivity {
             configImageView.setImageDrawable(getDrawable(R.drawable.configuration_icon_white));
             settingsImageView.setImageDrawable(getDrawable(R.drawable.settings_icon_green));
             homeImageVIew.setImageDrawable(getDrawable(R.drawable.home_icon_white));
+            menuImageView.setImageDrawable(getDrawable(R.drawable.menu_icon_white));
         }else if (activeView==1){
             messagesImageVIew.setImageDrawable(getDrawable(R.drawable.messages_icon_white));
             settingsImageView.setImageDrawable(getDrawable(R.drawable.settings_icon_white));
             configImageView.setImageDrawable(getDrawable(R.drawable.configuration_icon_green));
             homeImageVIew.setImageDrawable(getDrawable(R.drawable.home_icon_white));
+            menuImageView.setImageDrawable(getDrawable(R.drawable.menu_icon_white));
         }else if(activeView==2) {
             settingsImageView.setImageDrawable(getDrawable(R.drawable.settings_icon_white));
             configImageView.setImageDrawable(getDrawable(R.drawable.configuration_icon_white));
             messagesImageVIew.setImageDrawable(getDrawable(R.drawable.messages_icon_green));
             homeImageVIew.setImageDrawable(getDrawable(R.drawable.home_icon_white));
+            menuImageView.setImageDrawable(getDrawable(R.drawable.menu_icon_white));
         }else if (activeView==3){
             settingsImageView.setImageDrawable(getDrawable(R.drawable.settings_icon_white));
             configImageView.setImageDrawable(getDrawable(R.drawable.configuration_icon_white));
             messagesImageVIew.setImageDrawable(getDrawable(R.drawable.messages_icon_white));
             homeImageVIew.setImageDrawable(getDrawable(R.drawable.home_icon_green));
+            menuImageView.setImageDrawable(getDrawable(R.drawable.menu_icon_white));
+        }else if(activeView == 4){
+            settingsImageView.setImageDrawable(getDrawable(R.drawable.settings_icon_white));
+            configImageView.setImageDrawable(getDrawable(R.drawable.configuration_icon_white));
+            messagesImageVIew.setImageDrawable(getDrawable(R.drawable.messages_icon_white));
+            homeImageVIew.setImageDrawable(getDrawable(R.drawable.home_icon_white));
+            menuImageView.setImageDrawable(getDrawable(R.drawable.menu_icon_green));
         }
 
     }

@@ -82,6 +82,14 @@
                 android:src="@drawable/home_icon_green"
                 app:layout_constraintEnd_toStartOf="@+id/configuration_home_activity"
                 app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
+                android:id="@+id/menu_button_home_activity"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_margin="4dp"
+                android:src="@drawable/menu_icon_white"
+                app:layout_constraintEnd_toStartOf="@+id/configuration_home_activity"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <View
                 android:layout_width="0dp"
