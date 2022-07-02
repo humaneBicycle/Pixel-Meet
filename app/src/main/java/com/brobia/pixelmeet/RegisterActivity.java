@@ -28,7 +28,10 @@ import com.aminography.primecalendar.PrimeCalendar;
 import com.aminography.primecalendar.civil.CivilCalendar;
 import com.aminography.primedatepicker.picker.PrimeDatePicker;
 import com.aminography.primedatepicker.picker.callback.SingleDayPickCallback;
+import com.brobia.pixelmeet.model.NearbyUser;
 import com.brobia.pixelmeet.model.User;
+import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.github.ybq.android.spinkit.style.CubeGrid;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -49,7 +52,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     public TextView[] mDots;
     LinearLayout mDotsLayout;
-    ImageView prev, next, location;
+    ImageView prev, next, locationButton;
     LinearLayout screenOne, screenTwo, screenThree;
     EditText  inputAge, locationEditText, name, emailEditText, hobbyRegisterET, bioRegisterET, prologueET,professionET;
     public static final int LOCATION_ACCESS_CODE = 1;
@@ -61,6 +64,8 @@ public class RegisterActivity extends AppCompatActivity {
     PowerSpinnerView genderSpinner, eyeColorSpinner, hairStyleSpinner, smokingSpinner, religionSpinner;
     ProgressBar progressBar;
     String dob;
+    Location location;
+    String city;
 
 
     @Override
@@ -75,7 +80,7 @@ public class RegisterActivity extends AppCompatActivity {
         //imageView buttons
         next = findViewById(R.id.img_register_next);
         prev = findViewById(R.id.img_register_prev);
-        location = findViewById(R.id.location_button_register);
+        locationButton = findViewById(R.id.location_button_register);
 
         //screens aka linear layout
         screenOne = findViewById(R.id.screen_one);
@@ -104,8 +109,9 @@ public class RegisterActivity extends AppCompatActivity {
 
         //progress bar
         progressBar = findViewById(R.id.progress_bar_loading_register_activity);
-
-
+        Sprite sprite = new CubeGrid();
+        sprite.setColor(getColor(R.color.progress_bar_color));
+        progressBar.setIndeterminateDrawable(sprite);
 
 
         String email = getIntent().getStringExtra("email");
@@ -169,7 +175,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        location.setOnClickListener(new View.OnClickListener() {
+        locationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(ContextCompat.checkSelfPermission(
@@ -269,22 +275,30 @@ public class RegisterActivity extends AppCompatActivity {
             public void onComplete() {
                 Log.d("pwd", "onComplete: register user");
                 if(isFormComplete==0){
-                    String s = "Dummy address";
+
                     Log.d("pwd", "time to start firebase registration");
-                    User user = new User(name.getText().toString(),dob,eyeColorSpinner.getText().toString(),genderSpinner.getText().toString(),hairStyleSpinner.getText().toString(),religionSpinner.getText().toString(),hobbyRegisterET.getText().toString(),smokingSpinner.getText().toString(),prologueET.getText().toString(),bioRegisterET.getText().toString(),professionET.getText().toString(),s,Integer.parseInt(inputAge.getText().toString()),0,"https://firebasestorage.googleapis.com/v0/b/pixel-meet-67f55.appspot.com/o/plate_default.png?alt=media&token=b7560b4b-82c3-40b7-9d8e-13ae7be995f4","https://firebasestorage.googleapis.com/v0/b/pixel-meet-67f55.appspot.com/o/avatar_default.png?alt=media&token=c85a21c4-7fa4-4eb0-aa25-51745aced624","https://firebasestorage.googleapis.com/v0/b/pixel-meet-67f55.appspot.com/o/background_default.png?alt=media&token=c5d3eb91-8b5c-4381-9e37-8b925061a334",null,null,null,emailEditText.getText().toString(),FirebaseAuth.getInstance().getCurrentUser().getUid(),null,5);
-                    FirebaseFirestore.getInstance().collection("users").document().set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+
+                    User user = new User(name.getText().toString(),dob,eyeColorSpinner.getText().toString(),genderSpinner.getText().toString(),hairStyleSpinner.getText().toString(),religionSpinner.getText().toString(),hobbyRegisterET.getText().toString(),smokingSpinner.getText().toString(),prologueET.getText().toString(),bioRegisterET.getText().toString(),professionET.getText().toString(),city,Integer.parseInt(inputAge.getText().toString()),0,"https://firebasestorage.googleapis.com/v0/b/pixel-meet-67f55.appspot.com/o/plate_default.png?alt=media&token=b7560b4b-82c3-40b7-9d8e-13ae7be995f4","https://firebasestorage.googleapis.com/v0/b/pixel-meet-67f55.appspot.com/o/avatar_default.png?alt=media&token=c85a21c4-7fa4-4eb0-aa25-51745aced624","https://firebasestorage.googleapis.com/v0/b/pixel-meet-67f55.appspot.com/o/background_default.png?alt=media&token=c5d3eb91-8b5c-4381-9e37-8b925061a334",null,null,null,emailEditText.getText().toString(),FirebaseAuth.getInstance().getCurrentUser().getUid(),null,5);
+                    NearbyUser nearbyUser = new NearbyUser(FirebaseAuth.getInstance().getCurrentUser().getUid(),name.getText().toString(),eyeColorSpinner.getText().toString(),genderSpinner.getText().toString(),hairStyleSpinner.getText().toString(),religionSpinner.getText().toString(),hobbyRegisterET.getText().toString(),smokingSpinner.getText().toString(),prologueET.getText().toString(),bioRegisterET.getText().toString(),professionET.getText().toString(),null, Integer.parseInt(inputAge.getText().toString()),0,"https://firebasestorage.googleapis.com/v0/b/pixel-meet-67f55.appspot.com/o/plate_default.png?alt=media&token=b7560b4b-82c3-40b7-9d8e-13ae7be995f4","https://firebasestorage.googleapis.com/v0/b/pixel-meet-67f55.appspot.com/o/avatar_default.png?alt=media&token=c85a21c4-7fa4-4eb0-aa25-51745aced624","https://firebasestorage.googleapis.com/v0/b/pixel-meet-67f55.appspot.com/o/background_default.png?alt=media&token=c5d3eb91-8b5c-4381-9e37-8b925061a334",null,null,null);
+                    FirebaseFirestore.getInstance().collection("users").document().set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
-                        public void onSuccess(Void unused) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(RegisterActivity.this, "User Registered Successfully!", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                            new PreferenceGetter(RegisterActivity.this).putBoolean(PreferenceGetter.IS_REGISTERED,true);
-                            progressBar.setVisibility(View.GONE);
-                            startActivity(new Intent(RegisterActivity.this,HomeActivity.class));
-                            finish();
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()){
+                                FirebaseFirestore.getInstance().collection("nearBuyUser").document().set(nearbyUser).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if(task.isSuccessful()) {
+                                            Toast.makeText(RegisterActivity.this, "User Registered Successfully", Toast.LENGTH_SHORT).show();
+                                            new PreferenceGetter(RegisterActivity.this).putBoolean(PreferenceGetter.IS_REGISTERED, true);
+                                            progressBar.setVisibility(View.GONE);
+                                            startActivity(new Intent(RegisterActivity.this, HomeActivity.class));
+                                            finish();
+                                        }else{
+                                            Toast.makeText(RegisterActivity.this, "Registration failed", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+                            }
                         }
                     });
                 }else{
@@ -406,24 +420,30 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void getAndUpdateUserLocation(){
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             fusedLocationClient.getLastLocation()
-                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    .addOnCompleteListener(new OnCompleteListener<Location>() {
                         @Override
-                        public void onSuccess(Location location) {
-                            // Got last known location. In some rare situations this can be null.
-                            if (location != null) {
-                                // Logic to handle location object
-                                latitude = location.getLatitude();
-                                longitude = location.getLongitude();
-                                Log.v("location pmd","lat:"+ latitude+"lon: "+ longitude);
-                                locationEditText.setText(getAddress(latitude,longitude));
+                        public void onComplete(@NonNull Task<Location> task) {
+                            if(task.isSuccessful()){
+                                location = task.getResult();
+                                if (location != null) {
+                                    // Logic to handle location object
+                                    latitude = location.getLatitude();
+                                    longitude = location.getLongitude();
+                                    city = getCityAndCountry(latitude,longitude);
+                                    Log.v("pwd location pmd","lat:"+ latitude+"lon: "+ longitude);
+                                    locationEditText.setText(city);
 
+                                }else{
+                                    Log.d("pwd getAndUpdateUserLocation ", "onSuccess: location null");
+                                }
                             }
                         }
                     });
         }else{
             new PreferenceGetter(this).putBoolean(PreferenceGetter.HAS_LOCATION_ACCESS,false);
+            Log.d("pwd getAndUpdateUserLocation ", "no location perm");
             //TODO show user app cant work without location nperm
         }
     }
@@ -449,19 +469,12 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-    public String getAddress(double lat, double lng) {
+    public String getCityAndCountry(double lat, double lng) {
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
         try {
             List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
             Address obj = addresses.get(0);
-            String add = obj.getAddressLine(0);
-            add = add + "\n" + obj.getCountryName();
-            add = add + "\n" + obj.getCountryCode();
-            add = add + "\n" + obj.getAdminArea();
-            add = add + "\n" + obj.getPostalCode();
-            add = add + "\n" + obj.getSubAdminArea();
-            add = add + "\n" + obj.getLocality();
-            add = add + "\n" + obj.getSubThoroughfare();
+            String add = obj.getLocality() + ", " + obj.getCountryName();
 
             Log.v("IGA", "Address" + add);
             return add;

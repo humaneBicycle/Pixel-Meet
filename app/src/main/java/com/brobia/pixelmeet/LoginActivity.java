@@ -177,6 +177,20 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private boolean doesUserWithThisMailExist(String mail){
+        FirebaseFirestore.getInstance().collection("users").whereEqualTo("email",mail).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    if(!task.getResult().isEmpty()){
+                        emailAlreadyExist = false;
+                    }else{
+                        emailAlreadyExist = true;
+                    }
+                }else{
+                    Toast.makeText(LoginActivity.this, "Something went wrong! Please try again later.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         FirebaseFirestore.getInstance().collection("users").whereEqualTo("email",mail).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -228,8 +242,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void loginHandler(String email, boolean isLoginSuccessful){
         if(isLoginSuccessful){
-            doesUserWithThisMailExist(email);
-            if(isLoginSuccessful){
+            if(doesUserWithThisMailExist(email)){
                 startActivity(new Intent(LoginActivity.this,HomeActivity.class));
                 new PreferenceGetter(this).putBoolean(PreferenceGetter.IS_SIGNED_IN,true);
                 new PreferenceGetter(this).putBoolean(PreferenceGetter.IS_REGISTERED,true);

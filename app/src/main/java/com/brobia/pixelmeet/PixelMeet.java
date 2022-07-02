@@ -1,6 +1,7 @@
 package com.brobia.pixelmeet;
 
 import android.app.Application;
+import android.location.Location;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -9,6 +10,7 @@ import com.brobia.pixelmeet.model.User;
 public class PixelMeet extends Application {
 
     static User user;
+    Location mLastLocation;
     static String ACTIVE_FRAGMENT="home";//inventory, settings, messages, wallet, config, marketPlace, quests, profile, swipe, contactAndSupport, menu, lounge;
 
     public String getActiveFragment() {
@@ -26,6 +28,14 @@ public class PixelMeet extends Application {
 
     public void setUser(User user) {
         PixelMeet.user = user;
+    }
+
+    public Location getmLocation(){
+        return mLastLocation;
+    }
+
+    public void setmLocation(Location location){
+        mLastLocation = location;
     }
 
 

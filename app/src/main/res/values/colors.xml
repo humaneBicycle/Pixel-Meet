@@ -11,4 +11,5 @@
     <color name="transparent_black">#360F0F0F</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="green">#03D7A6</color>
+    <color name="progress_bar_color">#FFFFFFFF</color>
 </resources>

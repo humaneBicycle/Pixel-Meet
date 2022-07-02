@@ -183,7 +183,10 @@
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_below="@+id/collect_button_fragment_home"
-            android:layout_margin="2dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginBottom="2dp"
             android:background="@drawable/marketplace_bg_photo"
             android:gravity="center">
 

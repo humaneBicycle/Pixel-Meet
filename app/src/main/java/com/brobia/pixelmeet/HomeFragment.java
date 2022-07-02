@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.telecom.Call;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,9 +32,16 @@ public class HomeFragment extends Fragment {
     RelativeLayout freeCoins;
     TextView freePicks, timeLeftHomeFrag;
     SeekBar timeSeekBar;
+    Callback callback;
+    ButtonColourChangeListener buttonColourChangeListener;
 
     public HomeFragment() {
         // Required empty public constructor
+    }
+
+    public HomeFragment(com.brobia.pixelmeet.Callback callback,ButtonColourChangeListener buttonColourChangeListener) {
+        this.callback = callback;
+        this.buttonColourChangeListener = buttonColourChangeListener;
     }
 
     @Override
@@ -48,65 +56,25 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         pixelMeet = (PixelMeet) getActivity().getApplication();
 
-        initUI(view);
-        Picasso.get().load(((PixelMeet) getActivity().getApplication()).getUser().getActivePlate()).into(plate);
-
-        profile.setOnClickListener(new View.OnClickListener() {
+        plate = view.findViewById(R.id.plate_background_home_fragment);
+        Picasso.get().load(((PixelMeet) getActivity().getApplication()).getUser().getActivePlate()).into(plate, new com.squareup.picasso.Callback() {
             @Override
-            public void onClick(View view) {
-                ProfileFragment fragment = (ProfileFragment) getActivity().getSupportFragmentManager().findFragmentByTag("profile");
-                if(fragment!=null) {
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, fragment, "profile").addToBackStack(null).commit();
-                }else{
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, new ProfileFragment(), "profile").addToBackStack(null).commit();
-                }
-                pixelMeet.setActiveFragment("profile");
+            public void onSuccess() {
+                callback.onComplete();
+                initUI(view);
+                setOnClickListeners();
+            }
+
+            @Override
+            public void onError(Exception e) {
+
             }
         });
-
-        swipe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SwipeFragment fragment = (SwipeFragment) getActivity().getSupportFragmentManager().findFragmentByTag("swipe");
-                if(fragment!=null) {
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, fragment, "swipe").addToBackStack(null).commit();
-                }else{
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, new SwipeFragment(), "swipe").addToBackStack(null).commit();
-                }
-                pixelMeet.setActiveFragment("swipe");
-            }
-        });
-
-        marketplace.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                MarketPlaceFragment fragment = (MarketPlaceFragment) getActivity().getSupportFragmentManager().findFragmentByTag("marketplace");
-                if(fragment!=null) {
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, fragment, "marketplace").addToBackStack(null).commit();
-                }else{
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, new MarketPlaceFragment(), "marketplace").addToBackStack(null).commit();
-                }
-                pixelMeet.setActiveFragment("marketplace");
-            }
-        });
-        collect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                QuestsFragment fragment = (QuestsFragment) getActivity().getSupportFragmentManager().findFragmentByTag("quests");
-                if(fragment!=null) {
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, fragment, "quests").addToBackStack(null).commit();
-                }else{
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, new QuestsFragment(), "quests").addToBackStack(null).commit();
-                }
-                pixelMeet.setActiveFragment("quests");
-            }
-        });
-
         return view;
     }
 
     private void initUI(View view){
-        plate = view.findViewById(R.id.plate_background_home_fragment);
+
         marketplace = view.findViewById(R.id.market_place_button_fragment_home);
         profile = view.findViewById(R.id.profile_button_fragment_home);
         swipe = view.findViewById(R.id.swipe_button_fragment_home);
@@ -122,7 +90,63 @@ public class HomeFragment extends Fragment {
         int min = hours+Integer.parseInt(String.valueOf(currentDateandTime.charAt(2)+currentDateandTime.charAt(3)));
         int minSum= min+hours;
         timeSeekBar.setProgress(minSum/1440);
+    }
 
+    private void setOnClickListeners(){
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                buttonColourChangeListener.onColourChange();
+                ProfileFragment fragment = (ProfileFragment) getActivity().getSupportFragmentManager().findFragmentByTag("profile");
+                if(fragment!=null) {
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, fragment, "profile").addToBackStack(null).commit();
+                }else{
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, new ProfileFragment(), "profile").addToBackStack(null).commit();
+                }
+                pixelMeet.setActiveFragment("profile");
+            }
+        });
+
+        swipe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                buttonColourChangeListener.onColourChange();
+                SwipeFragment fragment = (SwipeFragment) getActivity().getSupportFragmentManager().findFragmentByTag("swipe");
+                if(fragment!=null) {
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, fragment, "swipe").addToBackStack(null).commit();
+                }else{
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, new SwipeFragment((HomeActivity)getActivity()), "swipe").addToBackStack(null).commit();
+                }
+                pixelMeet.setActiveFragment("swipe");
+            }
+        });
+
+        marketplace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                buttonColourChangeListener.onColourChange();
+                MarketPlaceFragment fragment = (MarketPlaceFragment) getActivity().getSupportFragmentManager().findFragmentByTag("marketplace");
+                if(fragment!=null) {
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, fragment, "marketplace").addToBackStack(null).commit();
+                }else{
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, new MarketPlaceFragment(), "marketplace").addToBackStack(null).commit();
+                }
+                pixelMeet.setActiveFragment("marketplace");
+            }
+        });
+        collect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                buttonColourChangeListener.onColourChange();
+                QuestsFragment fragment = (QuestsFragment) getActivity().getSupportFragmentManager().findFragmentByTag("quests");
+                if(fragment!=null) {
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, fragment, "quests").addToBackStack(null).commit();
+                }else{
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, new QuestsFragment(), "quests").addToBackStack(null).commit();
+                }
+                pixelMeet.setActiveFragment("quests");
+            }
+        });
     }
 
 }

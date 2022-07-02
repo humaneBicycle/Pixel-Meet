@@ -9,11 +9,12 @@ public class NearbyUser {
     String activePlate, activeAvatar, activeBackground;
 
     //location
-    String latitude, longitude, hash;
+    String latitude, longitude, hash, uid;
 
     public NearbyUser(){}
 
-    public NearbyUser(String name, String eyeColor, String gender, String hairstyle, String religion, String hobby, String smoking, String prologue, String bio, String profession, String address, int age, int level, String activePlate, String activeAvatar, String activeBackground, String latitude, String longitude, String hash) {
+    public NearbyUser(String uid, String name, String eyeColor, String gender, String hairstyle, String religion, String hobby, String smoking, String prologue, String bio, String profession, String address, int age, int level, String activePlate, String activeAvatar, String activeBackground, String latitude, String longitude, String hash) {
+        this.uid = uid;
         this.name = name;
         this.eyeColor = eyeColor;
         this.gender = gender;
@@ -185,5 +186,13 @@ public class NearbyUser {
 
     public void setHash(String hash) {
         this.hash = hash;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 }

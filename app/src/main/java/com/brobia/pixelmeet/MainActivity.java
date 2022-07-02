@@ -7,8 +7,10 @@ import android.view.View;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  {
 
+
+    //TODO whether google play services exist or not check
     @Override
     protected void onStart() {
         super.onStart();
