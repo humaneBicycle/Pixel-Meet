@@ -1,4 +1,4 @@
-package com.brobia.pixelmeet;
+package com.brobia.pixelmeet.fragments;
 
 import android.os.Bundle;
 
@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.dynamic.IFragmentWrapper;
+import com.brobia.pixelmeet.R;
 
 public class SettingsFragment extends Fragment {
 

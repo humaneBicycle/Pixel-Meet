@@ -9,7 +9,6 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,6 +16,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.brobia.pixelmeet.fragments.ConfigurationFragment;
+import com.brobia.pixelmeet.fragments.HomeFragment;
+import com.brobia.pixelmeet.fragments.InventoryFragment;
+import com.brobia.pixelmeet.fragments.MenuFragment;
+import com.brobia.pixelmeet.fragments.MessagesFragment;
+import com.brobia.pixelmeet.fragments.SettingsFragment;
+import com.brobia.pixelmeet.fragments.WalletFragment;
 import com.brobia.pixelmeet.model.NearbyUser;
 import com.brobia.pixelmeet.model.User;
 import com.firebase.geofire.GeoFire;
@@ -40,7 +46,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener, HomeFragmentCallback, SwipeFragmentCallback {
+public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener, HomeFragmentCallback, SwipeFragmentCallback, NotifyUserToHomeActivity {
 
     ImageView avatarImageView, messagesImageVIew, configImageView, settingsImageView, walletImageView, inventoryImageView, activeBackgroundImageView, homeImageVIew, menuImageView, acceptButton, rejectButton;
     TextView nameTextView;
@@ -59,8 +65,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         pixelMeet = (PixelMeet) getApplication();
 
-        buildGoogleAPIClient();//deprecated
-        //alternateLocationGetter();//not deprecated but unstable
+        //buildGoogleAPIClient();//deprecated
+        alternateLocationGetter();//not deprecated but unstable
 
         FirebaseFirestore.getInstance().collection("users").whereEqualTo("email", FirebaseAuth.getInstance().getCurrentUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -199,32 +205,36 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void alternateLocationGetter(){
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                if (ActivityCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(HomeActivity.this);
-                    fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Location> task) {
-                            if(task.isSuccessful()){
-                                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("userLocation");
+        if (ActivityCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(HomeActivity.this);
+            fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+                @Override
+                public void onComplete(@NonNull Task<Location> task) {
+                    if(task.isSuccessful()){
+                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("userLocation");
 
-                                Location location = task.getResult();
-                                GeoFire geoFire = new GeoFire(databaseReference);
-                                geoFire.setLocation(userID, new GeoLocation(location.getLatitude(), location.getLongitude()));
-                                Log.d("pwd fusedLocationClient HomeActivity", "onComplete: "+location.getLongitude()+"+"+location.getLatitude());
-                            }
-                        }
-                    });
-                }else{
-                    new PreferenceGetter(HomeActivity.this).putBoolean(PreferenceGetter.HAS_LOCATION_ACCESS,false);
-                    Log.d("pwd onConnected", "no perm");
-                    //TODO has no location perm. build a pipleline
+                        mLastLocation = task.getResult();
+                        pixelMeet.setmLocation(mLastLocation);
+                        GeoFire geoFire = new GeoFire(databaseReference);
+                        geoFire.setLocation(userID, new GeoLocation(mLastLocation.getLatitude(), mLastLocation.getLongitude()));
+                        Log.d("pwd fusedLocationClient HomeActivity", "onComplete: "+mLastLocation.getLongitude()+"+"+mLastLocation.getLatitude());
+                    }
                 }
-            }
-        };
-        new Handler().postDelayed(runnable,INTERNAL);
+            });
+        }else{
+            new PreferenceGetter(HomeActivity.this).putBoolean(PreferenceGetter.HAS_LOCATION_ACCESS,false);
+            Log.d("pwd onConnected", "no perm");
+            //TODO has no location perm. build a pipleline
+        }
+
+
+//        Runnable runnable = new Runnable() {
+//            @Override
+//            public void run() {
+//                //insert above lines above
+//            }
+//        };
+//        new Handler().postDelayed(runnable,INTERNAL);
     }
 
     public void initUI() {
@@ -444,6 +454,14 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+
+    }
+
+    @Override
+    public void getCurrentUser(NearbyUser nearbyUser) {
+        nameTextView.setText(nearbyUser.getName());
+        Picasso.get().load(nearbyUser.getActiveBackground()).into(activeBackgroundImageView);
+        Picasso.get().load(nearbyUser.getActiveAvatar()).into(avatarImageView);
 
     }
 }

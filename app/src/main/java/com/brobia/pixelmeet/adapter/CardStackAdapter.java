@@ -1,6 +1,7 @@
 package com.brobia.pixelmeet.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,19 +11,25 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.brobia.pixelmeet.NotifyUserToHomeActivity;
 import com.brobia.pixelmeet.R;
 import com.brobia.pixelmeet.model.NearbyUser;
+import com.brobia.pixelmeet.model.NotifyUserToSwipeFragment;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class CardStackAdapter extends RecyclerView.Adapter<CardStackAdapter.CardStackViewHolder> {
+public class CardStackAdapter extends RecyclerView.Adapter<CardStackAdapter.CardStackViewHolder>  {
     Context context;
     ArrayList<NearbyUser> nearbyUsers;
+    NotifyUserToHomeActivity notifyUserToHomeActivity;
+    NotifyUserToSwipeFragment notifyUserToSwipeFragment;
 
-    public CardStackAdapter(Context context, ArrayList<NearbyUser> nearbyUsers){
+    public CardStackAdapter(Context context, ArrayList<NearbyUser> nearbyUsers, NotifyUserToHomeActivity notifyUserToHomeActivity,NotifyUserToSwipeFragment notifyUserToSwipeFragment){
         this.context = context;
         this.nearbyUsers = nearbyUsers;
+        this.notifyUserToHomeActivity = notifyUserToHomeActivity;
+        this.notifyUserToSwipeFragment = notifyUserToSwipeFragment;
     }
 
     @NonNull
@@ -43,6 +50,12 @@ public class CardStackAdapter extends RecyclerView.Adapter<CardStackAdapter.Card
         holder.smokingTV.setText(user.getSmoking());
         holder.religionTV.setText(user.getReligion());
         holder.heightTV.setText(user.getHairstyle());//wrong type
+
+        Log.d("pwd", "onBindViewHolder: "+ user.getName());
+
+        //get called only when the topmost stack is visible. so i can
+        notifyUserToHomeActivity.getCurrentUser(user);
+        notifyUserToSwipeFragment.topUserNotification(user);
 
     }
 

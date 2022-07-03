@@ -1,4 +1,4 @@
-package com.brobia.pixelmeet;
+package com.brobia.pixelmeet.fragments;
 
 import android.os.Bundle;
 
@@ -7,19 +7,22 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-public class InventoryFragment extends Fragment {
 
-    static InventoryFragment fragment;
+import com.brobia.pixelmeet.R;
 
-    public InventoryFragment() {
+public class MessagesFragment extends Fragment {
+
+    static MessagesFragment fragment;
+
+    public MessagesFragment() {
         // Required empty public constructor
     }
 
-    public static InventoryFragment getInstance() {
+    public static MessagesFragment getInstance() {
         if(fragment!=null) {
             return fragment;
         }else{
-            fragment = new InventoryFragment();
+            fragment = new MessagesFragment();
             return fragment;
         }
     }
@@ -27,7 +30,7 @@ public class InventoryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_inventory, container, false);;
+        View view = inflater.inflate(R.layout.fragment_messages, container, false);
         return view;
     }
 }

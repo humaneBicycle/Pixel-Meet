@@ -157,6 +157,7 @@ public class RegisterActivity extends AppCompatActivity {
                 dobSelector.setText(dob);
                 inputAge.setText(String.valueOf(Calendar.getInstance().get(Calendar.YEAR) -  singleDay.getYear()));
                 inputAge.setClickable(false);
+                inputAge.setEnabled(false);
 
             }
         };
@@ -180,7 +181,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(ContextCompat.checkSelfPermission(
                         RegisterActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED){
-                    fusedLocationClient = LocationServices.getFusedLocationProviderClient(RegisterActivity.this);
+
 
                     getAndUpdateUserLocation();
                 }else{
@@ -420,7 +421,8 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void getAndUpdateUserLocation(){
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(RegisterActivity.this);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ) {
             fusedLocationClient.getLastLocation()
                     .addOnCompleteListener(new OnCompleteListener<Location>() {
                         @Override
@@ -444,6 +446,7 @@ public class RegisterActivity extends AppCompatActivity {
         }else{
             new PreferenceGetter(this).putBoolean(PreferenceGetter.HAS_LOCATION_ACCESS,false);
             Log.d("pwd getAndUpdateUserLocation ", "no location perm");
+            Toast.makeText(this, "Please grant permission to work", Toast.LENGTH_SHORT).show();
             //TODO show user app cant work without location nperm
         }
     }
@@ -508,9 +511,6 @@ public class RegisterActivity extends AppCompatActivity {
         @Override
         public void run() {
             task.run();
-
-
-
             callback.onComplete();
 
         }

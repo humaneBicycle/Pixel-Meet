@@ -1,4 +1,4 @@
-package com.brobia.pixelmeet;
+package com.brobia.pixelmeet.fragments;
 
 import android.os.Bundle;
 
@@ -9,10 +9,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
+import com.brobia.pixelmeet.PixelMeet;
+import com.brobia.pixelmeet.R;
+import com.brobia.pixelmeet.fragments.ContactAndSupportFragment;
+import com.brobia.pixelmeet.fragments.InventoryFragment;
+import com.brobia.pixelmeet.fragments.LoungeFragment;
+import com.brobia.pixelmeet.fragments.ProfileFragment;
+import com.brobia.pixelmeet.fragments.QuestsFragment;
+import com.brobia.pixelmeet.fragments.WalletFragment;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 public class MenuFragment extends Fragment {
 

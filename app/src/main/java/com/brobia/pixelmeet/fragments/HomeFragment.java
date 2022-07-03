@@ -1,13 +1,9 @@
-package com.brobia.pixelmeet;
+package com.brobia.pixelmeet.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import android.telecom.Call;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +13,15 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.brobia.pixelmeet.HomeActivity;
+import com.brobia.pixelmeet.HomeFragmentCallback;
+import com.brobia.pixelmeet.PixelMeet;
+import com.brobia.pixelmeet.R;
+import com.brobia.pixelmeet.fragments.MarketPlaceFragment;
+import com.brobia.pixelmeet.fragments.ProfileFragment;
+import com.brobia.pixelmeet.fragments.QuestsFragment;
+import com.brobia.pixelmeet.fragments.SwipeFragment;
 import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

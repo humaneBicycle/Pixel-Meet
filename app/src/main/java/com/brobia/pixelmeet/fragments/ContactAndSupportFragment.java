@@ -1,4 +1,4 @@
-package com.brobia.pixelmeet;
+package com.brobia.pixelmeet.fragments;
 
 import android.os.Bundle;
 
@@ -8,12 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.brobia.pixelmeet.R;
+
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link MarketPlaceFragment#newInstance} factory method to
+ * Use the {@link ContactAndSupportFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MarketPlaceFragment extends Fragment {
+public class ContactAndSupportFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,7 +26,7 @@ public class MarketPlaceFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public MarketPlaceFragment() {
+    public ContactAndSupportFragment() {
         // Required empty public constructor
     }
 
@@ -34,11 +36,11 @@ public class MarketPlaceFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment MarketPlaceFragment.
+     * @return A new instance of fragment ContactAndSupportFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static MarketPlaceFragment newInstance(String param1, String param2) {
-        MarketPlaceFragment fragment = new MarketPlaceFragment();
+    public static ContactAndSupportFragment newInstance(String param1, String param2) {
+        ContactAndSupportFragment fragment = new ContactAndSupportFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -59,6 +61,6 @@ public class MarketPlaceFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_market_place, container, false);
+        return inflater.inflate(R.layout.fragment_contact_and_support, container, false);
     }
 }

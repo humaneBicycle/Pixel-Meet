@@ -1,22 +1,26 @@
-package com.brobia.pixelmeet;
+package com.brobia.pixelmeet.fragments;
 
 import android.location.Location;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.SharedElementCallback;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.brobia.pixelmeet.HomeActivity;
+import com.brobia.pixelmeet.PixelMeet;
+import com.brobia.pixelmeet.R;
+import com.brobia.pixelmeet.SwipeFragmentCallback;
 import com.brobia.pixelmeet.adapter.CardStackAdapter;
 import com.brobia.pixelmeet.model.NearbyUser;
+import com.brobia.pixelmeet.model.NotifyUserToSwipeFragment;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQuery;
@@ -36,10 +40,10 @@ import com.yuyakaido.android.cardstackview.Direction;
 
 import java.util.ArrayList;
 
-public class SwipeFragment extends Fragment {
+public class SwipeFragment extends Fragment implements NotifyUserToSwipeFragment {
 
     Location location;
-    private int radius = 1;
+    private int radius = 100;
     PixelMeet pixelMeet;
     ImageView background;
     ArrayList<NearbyUser> nearbyUsers;
@@ -62,18 +66,32 @@ public class SwipeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_swipe, container, false);
-        location = ((PixelMeet)getActivity().getApplication()).getmLocation();
+
 
         nearbyUsers = new ArrayList<>();
         //dummy data test
-        nearbyUsers.add(new NearbyUser("uid","abhay","eye","gender","hairstyle","religion","hobby","smoking","prologue","bio","professoin","address",10,0,"https://firebasestorage.googleapis.com/v0/b/pixel-meet-67f55.appspot.com/o/plate_default.png?alt=media&token=b7560b4b-82c3-40b7-9d8e-13ae7be995f4","https://firebasestorage.googleapis.com/v0/b/pixel-meet-67f55.appspot.com/o/avatar_default.png?alt=media&token=c85a21c4-7fa4-4eb0-aa25-51745aced624","https://firebasestorage.googleapis.com/v0/b/pixel-meet-67f55.appspot.com/o/background_default.png?alt=media&token=c5d3eb91-8b5c-4381-9e37-8b925061a334","","",""));
+        nearbyUsers.add(new NearbyUser("uid","abhaydummy","eye","gender","hairstyle","religion","hobby","smoking","prologue","bio","professoin","address",10,0,"https://firebasestorage.googleapis.com/v0/b/pixel-meet-67f55.appspot.com/o/plate_default.png?alt=media&token=b7560b4b-82c3-40b7-9d8e-13ae7be995f4","https://firebasestorage.googleapis.com/v0/b/pixel-meet-67f55.appspot.com/o/avatar_default.png?alt=media&token=c85a21c4-7fa4-4eb0-aa25-51745aced624","https://firebasestorage.googleapis.com/v0/b/pixel-meet-67f55.appspot.com/o/background_default.png?alt=media&token=c5d3eb91-8b5c-4381-9e37-8b925061a334","","",""));
 
         uids = new ArrayList<>();
 
         background = view.findViewById(R.id.plate_background_swipe_fragment);
         cardStackView = view.findViewById(R.id.card_stack_view_swipe);
 
-        getClosestUser();
+        Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                if(((PixelMeet)getActivity().getApplication()).getmLocation()!=null) {
+                    location = ((PixelMeet)getActivity().getApplication()).getmLocation();
+                    Log.d("pwd getting closest user", "runnable ");
+                    getClosestUser();
+                    handler.removeCallbacks(this);
+                }
+            }
+        };
+        new Handler().postDelayed(runnable,1000);
+
+
 
         cardStackListener = new CardStackListener() {
             @Override
@@ -158,7 +176,7 @@ public class SwipeFragment extends Fragment {
                                     nearbyUsers.add(nearbyUser);
                                     uids.add(key);
                                     cardStackAdapter.notifyItemInserted(nearbyUsers.size()-1);
-                                    Log.d("pwd name is ", nearbyUser.getName());
+                                    Log.d("pwd name is (onkeyEntered)", nearbyUser.getName());
                                 }else {
                                     Log.d("pwd getClosestUser", "result is empty");
                                 }
@@ -191,7 +209,8 @@ public class SwipeFragment extends Fragment {
                 //notify adapter
                 Log.d("pwd", "setting adapter with list  "+String.valueOf(nearbyUsers.size()));
                 cardStackLayoutManager = new CardStackLayoutManager(getActivity(),cardStackListener);
-                cardStackAdapter = new CardStackAdapter(getActivity(), nearbyUsers);
+                cardStackLayoutManager.setVisibleCount(1);
+                cardStackAdapter = new CardStackAdapter(getActivity(), nearbyUsers,(HomeActivity)getActivity(), SwipeFragment.this);
                 cardStackView.setLayoutManager(cardStackLayoutManager);
                 cardStackView.setAdapter(cardStackAdapter);
                 callback.onSearchEnded();
@@ -208,4 +227,8 @@ public class SwipeFragment extends Fragment {
     }
 
 
+    @Override
+    public void topUserNotification(NearbyUser user) {
+        Picasso.get().load(user.getActivePlate()).into(background);
+    }
 }

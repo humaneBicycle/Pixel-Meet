@@ -1,4 +1,4 @@
-package com.brobia.pixelmeet;
+package com.brobia.pixelmeet.fragments;
 
 import android.os.Bundle;
 
@@ -8,31 +8,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.brobia.pixelmeet.R;
 
-public class ConfigurationFragment extends Fragment {
+public class InventoryFragment extends Fragment {
 
-    static ConfigurationFragment fragment;
+    static InventoryFragment fragment;
 
-    public ConfigurationFragment() {
+    public InventoryFragment() {
         // Required empty public constructor
     }
 
-    public static  ConfigurationFragment getInstance(){
-        if(fragment!=null){
+    public static InventoryFragment getInstance() {
+        if(fragment!=null) {
             return fragment;
         }else{
-            fragment = new ConfigurationFragment();
+            fragment = new InventoryFragment();
             return fragment;
         }
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_configuration, container, false);
+        View view = inflater.inflate(R.layout.fragment_inventory, container, false);;
         return view;
     }
-
-
 }
