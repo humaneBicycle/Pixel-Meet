@@ -32,16 +32,14 @@ public class HomeFragment extends Fragment {
     RelativeLayout freeCoins;
     TextView freePicks, timeLeftHomeFrag;
     SeekBar timeSeekBar;
-    Callback callback;
-    ButtonColourChangeListener buttonColourChangeListener;
+    HomeFragmentCallback callback;
 
     public HomeFragment() {
         // Required empty public constructor
     }
 
-    public HomeFragment(com.brobia.pixelmeet.Callback callback,ButtonColourChangeListener buttonColourChangeListener) {
+    public HomeFragment(HomeFragmentCallback callback) {
         this.callback = callback;
-        this.buttonColourChangeListener = buttonColourChangeListener;
     }
 
     @Override
@@ -60,7 +58,7 @@ public class HomeFragment extends Fragment {
         Picasso.get().load(((PixelMeet) getActivity().getApplication()).getUser().getActivePlate()).into(plate, new com.squareup.picasso.Callback() {
             @Override
             public void onSuccess() {
-                callback.onComplete();
+                callback.onPlateLoaded();
                 initUI(view);
                 setOnClickListeners();
             }
@@ -96,7 +94,7 @@ public class HomeFragment extends Fragment {
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                buttonColourChangeListener.onColourChange();
+                callback.buttonClicked();
                 ProfileFragment fragment = (ProfileFragment) getActivity().getSupportFragmentManager().findFragmentByTag("profile");
                 if(fragment!=null) {
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, fragment, "profile").addToBackStack(null).commit();
@@ -110,7 +108,8 @@ public class HomeFragment extends Fragment {
         swipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                buttonColourChangeListener.onColourChange();
+                callback.buttonClicked();
+                callback.swipeButtonPressed();
                 SwipeFragment fragment = (SwipeFragment) getActivity().getSupportFragmentManager().findFragmentByTag("swipe");
                 if(fragment!=null) {
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, fragment, "swipe").addToBackStack(null).commit();
@@ -124,7 +123,7 @@ public class HomeFragment extends Fragment {
         marketplace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                buttonColourChangeListener.onColourChange();
+                callback.buttonClicked();
                 MarketPlaceFragment fragment = (MarketPlaceFragment) getActivity().getSupportFragmentManager().findFragmentByTag("marketplace");
                 if(fragment!=null) {
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, fragment, "marketplace").addToBackStack(null).commit();
@@ -137,7 +136,7 @@ public class HomeFragment extends Fragment {
         collect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                buttonColourChangeListener.onColourChange();
+                callback.buttonClicked();
                 QuestsFragment fragment = (QuestsFragment) getActivity().getSupportFragmentManager().findFragmentByTag("quests");
                 if(fragment!=null) {
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, fragment, "quests").addToBackStack(null).commit();

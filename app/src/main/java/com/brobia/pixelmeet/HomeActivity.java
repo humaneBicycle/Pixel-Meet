@@ -37,9 +37,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener, com.brobia.pixelmeet.Callback, NewUserFoundCallback, ButtonColourChangeListener {
+public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener, NewUserFoundCallback, HomeFragmentCallback, SwipeFragmentCallback {
 
-    ImageView avatarImageView, messagesImageVIew, configImageView, settingsImageView, walletImageView, inventoryImageView, activeBackgroundImageView, homeImageVIew, menuImageView;
+    ImageView avatarImageView, messagesImageVIew, configImageView, settingsImageView, walletImageView, inventoryImageView, activeBackgroundImageView, homeImageVIew, menuImageView, acceptButton, rejectButton;
     TextView nameTextView;
     ProgressBar progressBarSimple;
     PixelMeet pixelMeet;
@@ -47,7 +47,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     Location mLastLocation;
     LocationRequest mLocationRequest;
     String userID;
-    public static final int INTERNAL = 10000;
+    public static final int INTERNAL = 100000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +72,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                             if (fragment != null) {
                                 getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, fragment, "home").commit();
                             } else {
-                                getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, new HomeFragment(HomeActivity.this,HomeActivity.this), "home").commit();
+                                getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, new HomeFragment(HomeActivity.this), "home").commit();
                             }
                         }
 
@@ -165,7 +165,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 if (homeFragment != null) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, homeFragment, "home").commit();
                 } else {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, new HomeFragment(HomeActivity.this,HomeActivity.this), "home").commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, new HomeFragment(HomeActivity.this), "home").commit();
                 }
                 pixelMeet.setActiveFragment("home");
             }
@@ -185,6 +185,13 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
+        acceptButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
     }
 
     public void initUI() {
@@ -200,6 +207,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         homeImageVIew = findViewById(R.id.home_button_home_activity);
         nameTextView = findViewById(R.id.name_home_activity);
         menuImageView = findViewById(R.id.menu_button_home_activity);
+        acceptButton = findViewById(R.id.accept_button_home_activity);
+        rejectButton = findViewById(R.id.reject_button_home_activity);
 
         Sprite sprite = new CubeGrid();
         sprite.setColor(getColor(R.color.progress_bar_color));
@@ -258,8 +267,21 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         mGoogleAPIClient.connect();
     }
 
+    private void prepareUIForSwipe(){
+        inventoryImageView.setVisibility(View.GONE);
+        walletImageView.setVisibility(View.GONE);
+        acceptButton.setVisibility(View.VISIBLE);
+        rejectButton.setVisibility(View.VISIBLE);
 
+    }
 
+    private void prepareUIForHome(){
+        inventoryImageView.setVisibility(View.VISIBLE);
+        walletImageView.setVisibility(View.VISIBLE);
+        acceptButton.setVisibility(View.GONE);
+        rejectButton.setVisibility(View.GONE);
+
+    }
 
 
     @Override
@@ -313,19 +335,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        //TODO save the last online time in chat database.
-    }
 
-    @Override
-    public void onComplete() {
-        progressBarSimple.setVisibility(View.GONE);
-        Log.d("pwd callback", "onComplete: called");
-    }
 
-    //new user found callback
+    //new user found callback after swipe fragment was called
     @Override
     public void onNewUserLoaded(NearbyUser nearbyUser) {
         nameTextView.setText(nearbyUser.getName());
@@ -345,7 +357,30 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     @Override
-    public void onColourChange() {
+    public void onSearchStart() {
+        progressBarSimple.setVisibility(View.VISIBLE);
+
+    }
+
+    @Override
+    public void onPlateLoaded() {
+        progressBarSimple.setVisibility(View.GONE);
+        Log.d("pwd callback", "onComplete: called");
+    }
+
+    @Override
+    public void swipeButtonPressed() {
+        prepareUIForSwipe();
+    }
+
+    @Override
+    public void buttonClicked() {
+        prepareUIForHome();
         setActiveView(0);
+    }
+
+    @Override
+    public void onBackPressedSwipe() {
+        prepareUIForHome();
     }
 }

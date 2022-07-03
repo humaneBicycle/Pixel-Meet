@@ -3,7 +3,10 @@ package com.brobia.pixelmeet;
 import android.location.Location;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.SharedElementCallback;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -12,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.brobia.pixelmeet.adapter.CardStackAdapter;
 import com.brobia.pixelmeet.model.NearbyUser;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
@@ -25,6 +29,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
+import com.yuyakaido.android.cardstackview.CardStackLayoutManager;
+import com.yuyakaido.android.cardstackview.CardStackView;
 
 import java.util.ArrayList;
 
@@ -33,16 +39,18 @@ public class SwipeFragment extends Fragment {
     Location location;
     private int radius = 1;
     PixelMeet pixelMeet;
-    NewUserFoundCallback newUserFoundCallback;
     ImageView background;
     ArrayList<NearbyUser> nearbyUsers;
     ArrayList<String> uids;
+    CardStackLayoutManager cardStackLayoutManager;
+    CardStackView cardStackView;
+    SwipeFragmentCallback callback;
 
-
-    public SwipeFragment(NewUserFoundCallback newUserFoundCallback) {
-        this.newUserFoundCallback = newUserFoundCallback;
-    }
     public SwipeFragment(){// Required empty public constructor
+    }
+
+    public SwipeFragment(SwipeFragmentCallback callback){// Required empty public constructor
+        this.callback = callback;
     }
 
     @Override
@@ -52,13 +60,37 @@ public class SwipeFragment extends Fragment {
         location = ((PixelMeet)getActivity().getApplication()).getmLocation();
 
         nearbyUsers = new ArrayList<>();
+        //dummy data test
+        nearbyUsers.add(new NearbyUser("uid","abhay","eye","gender","hairstyle","religion","hobby","smoking","prologue","bio","professoin","address",10,0,"","","","","",""));
+
         uids = new ArrayList<>();
 
         background = view.findViewById(R.id.plate_background_swipe_fragment);
 
+        cardStackLayoutManager = new CardStackLayoutManager(getActivity());
+        CardStackAdapter cardStackAdapter = new CardStackAdapter(getActivity(), nearbyUsers);
+        cardStackView = view.findViewById(R.id.card_stack_view_swipe);
+        cardStackView.setLayoutManager(cardStackLayoutManager);
+        cardStackView.setAdapter(cardStackAdapter);
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(getActivity(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                HomeFragment homeFragment = (HomeFragment) getActivity().getSupportFragmentManager().findFragmentByTag("home");
+
+                if (homeFragment != null) {
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, homeFragment, "home").commit();
+                } else {
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container, new HomeFragment((HomeActivity)getActivity()), "home").commit();
+                }
+                pixelMeet.setActiveFragment("home");
+                callback.onBackPressedSwipe();
+            }
+        });
+
 
         pixelMeet = (PixelMeet)getActivity().getApplication();
-        Picasso.get().load(pixelMeet.getUser().getActiveBackground()).into(background);
+        //Picasso.get().load(pixelMeet.getUser().getActiveBackground()).into(background);
         getClosestUser();
         return view;
     }
@@ -124,4 +156,6 @@ public class SwipeFragment extends Fragment {
             }
         });
     }
+
+
 }
