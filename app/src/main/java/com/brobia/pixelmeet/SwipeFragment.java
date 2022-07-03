@@ -30,7 +30,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 import com.yuyakaido.android.cardstackview.CardStackLayoutManager;
+import com.yuyakaido.android.cardstackview.CardStackListener;
 import com.yuyakaido.android.cardstackview.CardStackView;
+import com.yuyakaido.android.cardstackview.Direction;
 
 import java.util.ArrayList;
 
@@ -45,6 +47,9 @@ public class SwipeFragment extends Fragment {
     CardStackLayoutManager cardStackLayoutManager;
     CardStackView cardStackView;
     SwipeFragmentCallback callback;
+    CardStackAdapter cardStackAdapter;
+    CardStackListener cardStackListener;
+
 
     public SwipeFragment(){// Required empty public constructor
     }
@@ -61,21 +66,54 @@ public class SwipeFragment extends Fragment {
 
         nearbyUsers = new ArrayList<>();
         //dummy data test
-        nearbyUsers.add(new NearbyUser("uid","abhay","eye","gender","hairstyle","religion","hobby","smoking","prologue","bio","professoin","address",10,0,"","","","","",""));
+        nearbyUsers.add(new NearbyUser("uid","abhay","eye","gender","hairstyle","religion","hobby","smoking","prologue","bio","professoin","address",10,0,"https://firebasestorage.googleapis.com/v0/b/pixel-meet-67f55.appspot.com/o/plate_default.png?alt=media&token=b7560b4b-82c3-40b7-9d8e-13ae7be995f4","https://firebasestorage.googleapis.com/v0/b/pixel-meet-67f55.appspot.com/o/avatar_default.png?alt=media&token=c85a21c4-7fa4-4eb0-aa25-51745aced624","https://firebasestorage.googleapis.com/v0/b/pixel-meet-67f55.appspot.com/o/background_default.png?alt=media&token=c5d3eb91-8b5c-4381-9e37-8b925061a334","","",""));
 
         uids = new ArrayList<>();
 
         background = view.findViewById(R.id.plate_background_swipe_fragment);
-
-        cardStackLayoutManager = new CardStackLayoutManager(getActivity());
-        CardStackAdapter cardStackAdapter = new CardStackAdapter(getActivity(), nearbyUsers);
         cardStackView = view.findViewById(R.id.card_stack_view_swipe);
-        cardStackView.setLayoutManager(cardStackLayoutManager);
-        cardStackView.setAdapter(cardStackAdapter);
+
+        getClosestUser();
+
+        cardStackListener = new CardStackListener() {
+            @Override
+            public void onCardDragging(Direction direction, float ratio) {
+
+            }
+
+            @Override
+            public void onCardSwiped(Direction direction) {
+                //card is swiped
+                Log.d("pwd card swiped ", "in direction : "+ direction.name());
+
+            }
+
+            @Override
+            public void onCardRewound() {
+
+            }
+
+            @Override
+            public void onCardCanceled() {
+
+            }
+
+            @Override
+            public void onCardAppeared(View view, int position) {
+
+            }
+
+            @Override
+            public void onCardDisappeared(View view, int position) {
+
+            }
+        };
+
 
         requireActivity().getOnBackPressedDispatcher().addCallback(getActivity(), new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
+                Log.d("pwd handleOnBackPressed", "handleOnBackPressed: back pressed on swipe frag");
                 HomeFragment homeFragment = (HomeFragment) getActivity().getSupportFragmentManager().findFragmentByTag("home");
 
                 if (homeFragment != null) {
@@ -91,7 +129,7 @@ public class SwipeFragment extends Fragment {
 
         pixelMeet = (PixelMeet)getActivity().getApplication();
         //Picasso.get().load(pixelMeet.getUser().getActiveBackground()).into(background);
-        getClosestUser();
+
         return view;
     }
 
@@ -108,6 +146,7 @@ public class SwipeFragment extends Fragment {
             @Override
             public void onKeyEntered(String key, GeoLocation location) {
                 //key returned will be th user id which we get from firebase auth
+                Log.d("pwd getClosestUser : ", "onKeyEntered: "+key+" and for this key ");
                 if(!pixelMeet.getUser().getUid().equals(key) && !uids.contains(key)){
                     FirebaseFirestore.getInstance().collection("nearBuyUser").whereEqualTo("uid",key).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
@@ -118,7 +157,8 @@ public class SwipeFragment extends Fragment {
                                     NearbyUser nearbyUser = task.getResult().toObjects(NearbyUser.class).get(0);
                                     nearbyUsers.add(nearbyUser);
                                     uids.add(key);
-                                    Log.d("pwd user near user added", "onComplete: "+ nearbyUser.getName());
+                                    cardStackAdapter.notifyItemInserted(nearbyUsers.size()-1);
+                                    Log.d("pwd name is ", nearbyUser.getName());
                                 }else {
                                     Log.d("pwd getClosestUser", "result is empty");
                                 }
@@ -131,7 +171,7 @@ public class SwipeFragment extends Fragment {
                 }else{
                     Log.d("pwd getClosestUser", "if failed");
                 }
-                Log.d("pwd getClosestUser : ", "onKeyEntered: "+key);
+
 
             }
 
@@ -147,6 +187,14 @@ public class SwipeFragment extends Fragment {
 
             @Override
             public void onGeoQueryReady() {
+                //ui changes
+                //notify adapter
+                Log.d("pwd", "setting adapter with list  "+String.valueOf(nearbyUsers.size()));
+                cardStackLayoutManager = new CardStackLayoutManager(getActivity(),cardStackListener);
+                cardStackAdapter = new CardStackAdapter(getActivity(), nearbyUsers);
+                cardStackView.setLayoutManager(cardStackLayoutManager);
+                cardStackView.setAdapter(cardStackAdapter);
+                callback.onSearchEnded();
 
             }
 
@@ -154,7 +202,9 @@ public class SwipeFragment extends Fragment {
             public void onGeoQueryError(DatabaseError error) {
 
             }
+
         });
+
     }
 
 
